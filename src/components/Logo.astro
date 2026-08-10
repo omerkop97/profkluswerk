@@ -1,0 +1,60 @@
+---
+/**
+ * Wordmark + beeldmerk, nagebouwd naar de flyer.
+ * TODO: vervangen zodra het originele vectorbestand er is (PLAN.md §10, punt 6).
+ */
+interface Props {
+  variant?: 'donker' | 'licht';
+  class?: string;
+}
+
+const { variant = 'donker', class: klasse = '' } = Astro.props;
+
+const kleurHoofd = variant === 'licht' ? 'text-white' : 'text-navy-900';
+const kleurSub = variant === 'licht' ? 'text-navy-100' : 'text-navy-700';
+---
+
+<span class={`flex items-center gap-2.5 ${klasse}`}>
+  <svg
+    class={`h-9 w-auto shrink-0 ${kleurHoofd}`}
+    viewBox="0 0 52 40"
+    fill="none"
+    aria-hidden="true"
+    focusable="false"
+  >
+    <!-- dak -->
+    <path
+      d="M3 21.5 25 4.5l22 17"
+      stroke="currentColor"
+      stroke-width="3.6"
+      stroke-linecap="round"
+      stroke-linejoin="round"></path>
+    <!-- raampjes -->
+    <rect x="14.5" y="24" width="5.4" height="5.4" rx="1" fill="currentColor"></rect>
+    <rect x="21.7" y="24" width="5.4" height="5.4" rx="1" fill="currentColor"></rect>
+    <!-- verfroller -->
+    <rect
+      x="30"
+      y="24.2"
+      width="14"
+      height="5"
+      rx="1.6"
+      fill="var(--color-gold-500)"></rect>
+    <path
+      d="M44 26.7h3.2v5.6"
+      stroke="var(--color-gold-500)"
+      stroke-width="2.4"
+      stroke-linecap="round"
+      stroke-linejoin="round"></path>
+  </svg>
+
+  <span class="flex flex-col leading-none">
+    <span class="font-display text-[1.35rem] font-extrabold tracking-tight">
+      <span class={kleurHoofd}>PROF</span>
+      <span class="text-gold-500">KLUSWERK</span>
+    </span>
+    <span class={`eyebrow mt-1 text-[0.5rem] tracking-[0.18em] ${kleurSub}`}>
+      Onderhoud · Renovatie · Afwerking
+    </span>
+  </span>
+</span>

@@ -1,0 +1,414 @@
+---
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import Button from '../../components/Button.astro';
+import BrushEdge from '../../components/BrushEdge.astro';
+import { BEDRIJF, WERKWIJZE } from '../../consts';
+import { alleDiensten } from '../../lib/diensten';
+
+const diensten = await alleDiensten();
+
+/*
+ * Netlify Forms. De formulierdefinitie wordt bij de deploy uit de statische
+ * HTML gelezen, er is dus geen backend nodig. Let op: dit werkt alleen op
+ * Netlify, niet op de lokale dev-server. Zie NETLIFY.md.
+ */
+const FORMULIER = 'offerte';
+
+const invoer =
+  'w-full rounded-lg border-2 border-navy-100 bg-white px-4 py-3 text-navy-900 ' +
+  'placeholder:text-navy-200 transition-colors focus:border-navy-800 focus:outline-none ' +
+  'aria-[invalid=true]:border-red-600 aria-[invalid=true]:bg-red-50';
+
+const labelKlasse =
+  'block font-display text-[0.8rem] font-bold uppercase tracking-wide text-navy-900';
+
+const optioneel = 'ml-1.5 text-[0.7rem] font-medium tracking-normal text-navy-600 normal-case';
+
+const beloftes = [
+  'Reactie binnen één werkdag',
+  'Gratis advies op locatie',
+  'Vaste prijs vooraf, geen verrassingen achteraf',
+  'Vrijblijvend, u zit nergens aan vast',
+];
+---
+
+<Base
+  titel="Offerte aanvragen | Prof Kluswerk Arnhem"
+  omschrijving="Vraag vrijblijvend een offerte aan bij Prof Kluswerk. Gratis advies, reactie binnen één werkdag. Stuur gerust foto's van de klus mee."
+>
+  <section class="relative bg-navy-900 text-white">
+    <div
+      class="absolute inset-0 opacity-[0.06]"
+      style="background-image: repeating-linear-gradient(135deg, #fff 0 1px, transparent 1px 14px);"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="container-page relative pt-14 pb-20 lg:pt-20 lg:pb-28">
+      <p class="eyebrow text-gold-500">Gratis advies &amp; offerte</p>
+      <h1 class="mt-3 max-w-3xl text-4xl uppercase sm:text-5xl">
+        Vertel ons over uw klus
+      </h1>
+      <p class="mt-5 max-w-2xl text-lg leading-relaxed text-navy-100">
+        Vul het formulier in en u hoort binnen één werkdag van ons. Liever
+        direct contact? Bel of app gerust, dat mag ook.
+      </p>
+    </div>
+
+    <BrushEdge class="text-white" />
+  </section>
+
+  <section class="bg-white pb-20 lg:pb-28">
+    <div class="container-page grid gap-12 lg:grid-cols-12 lg:gap-16">
+      <!-- ========================= FORMULIER ========================= -->
+      <div class="lg:col-span-7">
+        <form
+          id="offerte-formulier"
+          name={FORMULIER}
+          method="POST"
+          action="/offerte/bedankt"
+          enctype="multipart/form-data"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          class="space-y-7"
+        >
+          <input type="hidden" name="form-name" value={FORMULIER} />
+
+          <!-- spamval: mensen zien dit veld niet, bots vullen het wel in -->
+          <p class="hidden" aria-hidden="true">
+            <label>
+              Dit veld niet invullen
+              <input name="bot-field" tabindex="-1" autocomplete="off" />
+            </label>
+          </p>
+
+          <div
+            id="formulier-fout"
+            class="hidden rounded-lg border-2 border-red-600 bg-red-50 p-4 text-sm font-medium text-red-800"
+            role="alert"
+          >
+          </div>
+
+          <div class="grid gap-6 sm:grid-cols-2">
+            <div>
+              <label class={labelKlasse} for="naam">Naam</label>
+              <input
+                class={`mt-2 ${invoer}`}
+                type="text"
+                id="naam"
+                name="naam"
+                autocomplete="name"
+                placeholder="Uw naam"
+                required
+                aria-describedby="fout-naam"
+              />
+              <p id="fout-naam" class="mt-1.5 hidden text-sm font-medium text-red-700"></p>
+            </div>
+
+            <div>
+              <label class={labelKlasse} for="telefoon">Telefoonnummer</label>
+              <input
+                class={`mt-2 ${invoer}`}
+                type="tel"
+                id="telefoon"
+                name="telefoon"
+                autocomplete="tel"
+                inputmode="tel"
+                placeholder="06 12 34 56 78"
+                required
+                aria-describedby="fout-telefoon"
+              />
+              <p id="fout-telefoon" class="mt-1.5 hidden text-sm font-medium text-red-700"></p>
+            </div>
+
+            <div>
+              <label class={labelKlasse} for="email">
+                E-mailadres <span class={optioneel}>(optioneel)</span>
+              </label>
+              <input
+                class={`mt-2 ${invoer}`}
+                type="email"
+                id="email"
+                name="email"
+                autocomplete="email"
+                placeholder="naam@voorbeeld.nl"
+                aria-describedby="fout-email"
+              />
+              <p id="fout-email" class="mt-1.5 hidden text-sm font-medium text-red-700"></p>
+            </div>
+
+            <div>
+              <label class={labelKlasse} for="postcode">Postcode</label>
+              <input
+                class={`mt-2 ${invoer}`}
+                type="text"
+                id="postcode"
+                name="postcode"
+                autocomplete="postal-code"
+                placeholder="6811 AA"
+                maxlength="7"
+                required
+                aria-describedby="fout-postcode hint-postcode"
+              />
+              <p id="hint-postcode" class="mt-1.5 text-xs text-navy-600">
+                Zo weten we meteen of u in ons werkgebied valt.
+              </p>
+              <p id="fout-postcode" class="mt-1.5 hidden text-sm font-medium text-red-700"></p>
+            </div>
+          </div>
+
+          <div>
+            <label class={labelKlasse} for="dienst">Om wat voor klus gaat het?</label>
+            <select
+              class={`mt-2 ${invoer}`}
+              id="dienst"
+              name="dienst"
+              required
+              aria-describedby="fout-dienst"
+            >
+              <option value="">Maak een keuze</option>
+              {diensten.map((d) => <option value={d.data.titel}>{d.data.titel}</option>)}
+              <option value="Iets anders">Iets anders</option>
+            </select>
+            <p id="fout-dienst" class="mt-1.5 hidden text-sm font-medium text-red-700"></p>
+          </div>
+
+          <div>
+            <label class={labelKlasse} for="omschrijving">Omschrijving van de klus</label>
+            <textarea
+              class={`mt-2 ${invoer}`}
+              id="omschrijving"
+              name="omschrijving"
+              rows="5"
+              placeholder="Bijvoorbeeld: badkamer van 6 m² opnieuw betegelen, wand en vloer."
+              required
+              aria-describedby="fout-omschrijving"></textarea>
+            <p id="fout-omschrijving" class="mt-1.5 hidden text-sm font-medium text-red-700"></p>
+          </div>
+
+          <div>
+            <label class={labelKlasse} for="fotos">
+              Foto's van de klus <span class={optioneel}>(optioneel)</span>
+            </label>
+            <input
+              class="mt-2 w-full cursor-pointer rounded-lg border-2 border-dashed border-navy-100 bg-navy-50 px-4 py-4 text-sm text-navy-700 transition-colors file:mr-4 file:cursor-pointer file:rounded-md file:border-0 file:bg-navy-900 file:px-4 file:py-2 file:font-display file:text-[0.7rem] file:font-bold file:tracking-wide file:text-white file:uppercase hover:border-navy-200"
+              type="file"
+              id="fotos"
+              name="fotos"
+              accept="image/*"
+              multiple
+              aria-describedby="hint-fotos fout-fotos"
+            />
+            <p id="hint-fotos" class="mt-2 text-xs leading-relaxed text-navy-600">
+              Maximaal 3 foto's, samen niet groter dan 8 MB. Met foto's kunnen we
+              vaak al meedenken zonder eerst langs te komen.
+            </p>
+            <p id="fout-fotos" class="mt-1.5 hidden text-sm font-medium text-red-700"></p>
+          </div>
+
+          <div class="rounded-lg bg-navy-50 p-5">
+            <Button formaat="lg" type="submit" class="w-full sm:w-auto">
+              Verstuur aanvraag
+              <Icon naam="pijl" class="h-4 w-4" />
+            </Button>
+            <p class="mt-4 text-xs leading-relaxed text-navy-700">
+              Wij gebruiken uw gegevens alleen om uw aanvraag te behandelen en
+              delen ze niet met anderen. Lees onze
+              <a href="/privacy" class="font-semibold underline hover:text-navy-900">
+                privacyverklaring</a
+              >.
+            </p>
+          </div>
+        </form>
+      </div>
+
+      <!-- ========================== ZIJKOLOM ========================== -->
+      <aside class="lg:col-span-5">
+        <div class="lg:sticky lg:top-28">
+          <div class="rounded-2xl border border-navy-100 bg-shell p-7">
+            <h2 class="font-display text-lg font-extrabold text-navy-900 uppercase">
+              Liever direct contact?
+            </h2>
+            <p class="mt-2 text-sm leading-relaxed text-navy-700">
+              Bellen of appen mag altijd. Vaak weten we binnen vijf minuten
+              waar we het over hebben.
+            </p>
+            <div class="mt-5 flex flex-col gap-3">
+              <Button href={BEDRIJF.telefoonLink} formaat="lg">
+                <Icon naam="telefoon" class="h-4 w-4" />
+                {BEDRIJF.telefoonWeergave}
+              </Button>
+              <Button
+                href={BEDRIJF.whatsapp}
+                variant="outline-donker"
+                formaat="lg"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Icon naam="whatsapp" class="h-4 w-4" />
+                WhatsApp ons
+              </Button>
+            </div>
+          </div>
+
+          <ul class="mt-8 space-y-4">
+            {
+              beloftes.map((belofte) => (
+                <li class="flex items-start gap-3">
+                  <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold-500 text-navy-900">
+                    <Icon naam="check" class="h-3.5 w-3.5" />
+                  </span>
+                  <span class="text-navy-800">{belofte}</span>
+                </li>
+              ))
+            }
+          </ul>
+
+          <div class="mt-8 border-t border-navy-100 pt-8">
+            <h2 class="eyebrow text-gold-700">Wat er daarna gebeurt</h2>
+            <ol class="mt-5 space-y-5">
+              {
+                WERKWIJZE.map((stap) => (
+                  <li class="flex gap-4">
+                    <span class="font-display text-xl font-extrabold text-navy-100">
+                      {stap.stap}
+                    </span>
+                    <div>
+                      <h3 class="font-display text-sm font-extrabold text-navy-900 uppercase">
+                        {stap.titel}
+                      </h3>
+                      <p class="mt-1 text-sm leading-relaxed text-navy-700">{stap.tekst}</p>
+                    </div>
+                  </li>
+                ))
+              }
+            </ol>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+</Base>
+
+<script>
+  const formulier = document.getElementById('offerte-formulier') as HTMLFormElement | null;
+  if (formulier) {
+    // Vanaf hier doen we de validatie zelf, met nettere meldingen dan de browser.
+    // Zonder JavaScript blijven de native required-attributen gewoon werken.
+    formulier.setAttribute('novalidate', '');
+
+    const MAX_BESTANDEN = 3;
+    const MAX_BYTES = 8 * 1024 * 1024;
+
+    const samenvatting = document.getElementById('formulier-fout') as HTMLElement;
+
+    const toonFout = (veld: HTMLElement, bericht: string) => {
+      veld.setAttribute('aria-invalid', 'true');
+      const melding = document.getElementById(`fout-${veld.id}`);
+      if (melding) {
+        melding.textContent = bericht;
+        melding.classList.remove('hidden');
+      }
+    };
+
+    const wisFout = (veld: HTMLElement) => {
+      veld.removeAttribute('aria-invalid');
+      const melding = document.getElementById(`fout-${veld.id}`);
+      if (melding) {
+        melding.textContent = '';
+        melding.classList.add('hidden');
+      }
+    };
+
+    const leeg = (v: string) => v.trim().length === 0;
+
+    const controleer = () => {
+      const fouten: HTMLElement[] = [];
+
+      const naam = formulier.elements.namedItem('naam') as HTMLInputElement;
+      const telefoon = formulier.elements.namedItem('telefoon') as HTMLInputElement;
+      const email = formulier.elements.namedItem('email') as HTMLInputElement;
+      const postcode = formulier.elements.namedItem('postcode') as HTMLInputElement;
+      const dienst = formulier.elements.namedItem('dienst') as HTMLSelectElement;
+      const omschrijving = formulier.elements.namedItem('omschrijving') as HTMLTextAreaElement;
+      const fotos = formulier.elements.namedItem('fotos') as HTMLInputElement;
+
+      [naam, telefoon, email, postcode, dienst, omschrijving, fotos].forEach(wisFout);
+
+      if (leeg(naam.value)) {
+        toonFout(naam, 'Vul uw naam in.');
+        fouten.push(naam);
+      }
+
+      const cijfers = telefoon.value.replace(/\D/g, '');
+      if (leeg(telefoon.value)) {
+        toonFout(telefoon, 'Vul uw telefoonnummer in, dan kunnen we u bereiken.');
+        fouten.push(telefoon);
+      } else if (cijfers.length < 9 || cijfers.length > 13) {
+        toonFout(telefoon, 'Dit lijkt geen geldig telefoonnummer.');
+        fouten.push(telefoon);
+      }
+
+      if (!leeg(email.value) && !/^[^\s@]+@[^\s@]+\.[a-z]{2,}$/i.test(email.value.trim())) {
+        toonFout(email, 'Dit lijkt geen geldig e-mailadres.');
+        fouten.push(email);
+      }
+
+      if (leeg(postcode.value)) {
+        toonFout(postcode, 'Vul uw postcode in.');
+        fouten.push(postcode);
+      } else if (!/^[1-9][0-9]{3}\s?[a-z]{2}$/i.test(postcode.value.trim())) {
+        toonFout(postcode, 'Vul een Nederlandse postcode in, bijvoorbeeld 6811 AA.');
+        fouten.push(postcode);
+      }
+
+      if (leeg(dienst.value)) {
+        toonFout(dienst, 'Kies om wat voor klus het gaat.');
+        fouten.push(dienst);
+      }
+
+      if (leeg(omschrijving.value)) {
+        toonFout(omschrijving, 'Vertel kort wat er moet gebeuren.');
+        fouten.push(omschrijving);
+      } else if (omschrijving.value.trim().length < 10) {
+        toonFout(omschrijving, 'Iets meer uitleg helpt ons een betere prijs te geven.');
+        fouten.push(omschrijving);
+      }
+
+      const bestanden = fotos.files ? Array.from(fotos.files) : [];
+      if (bestanden.length > MAX_BESTANDEN) {
+        toonFout(fotos, `Maximaal ${MAX_BESTANDEN} foto's tegelijk.`);
+        fouten.push(fotos);
+      } else if (bestanden.reduce((t, b) => t + b.size, 0) > MAX_BYTES) {
+        toonFout(fotos, 'De foto’s zijn samen groter dan 8 MB. Kies er minder of kleinere.');
+        fouten.push(fotos);
+      }
+
+      return fouten;
+    };
+
+    formulier.addEventListener('submit', (e) => {
+      const fouten = controleer();
+      if (fouten.length === 0) {
+        samenvatting.classList.add('hidden');
+        return;
+      }
+
+      e.preventDefault();
+      samenvatting.textContent =
+        fouten.length === 1
+          ? 'Er staat nog één ding open, zie hieronder.'
+          : `Er staan nog ${fouten.length} dingen open, zie hieronder.`;
+      samenvatting.classList.remove('hidden');
+      fouten[0].focus();
+      fouten[0].scrollIntoView({ block: 'center', behavior: 'smooth' });
+    });
+
+    // Zodra iemand een fout herstelt, melding meteen weghalen
+    formulier.addEventListener('input', (e) => {
+      const doel = e.target as HTMLElement;
+      if (doel?.id && doel.getAttribute('aria-invalid') === 'true') wisFout(doel);
+    });
+  }
+</script>

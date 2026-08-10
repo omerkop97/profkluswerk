@@ -1,0 +1,311 @@
+---
+import { Image } from 'astro:assets';
+import { render } from 'astro:content';
+import Base from '../../layouts/Base.astro';
+import Button from '../../components/Button.astro';
+import Icon from '../../components/Icon.astro';
+import BrushEdge from '../../components/BrushEdge.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { alleDiensten } from '../../lib/diensten';
+import { BEDRIJF, WERKGEBIED, WERKGEBIED_LANDELIJK } from '../../consts';
+
+export async function getStaticPaths() {
+  const diensten = await alleDiensten();
+  return diensten.map((dienst) => ({
+    params: { slug: dienst.id },
+    props: { dienst, diensten },
+  }));
+}
+
+const { dienst, diensten } = Astro.props;
+const { Content } = await render(dienst);
+const d = dienst.data;
+
+const andere = diensten.filter((a) => a.id !== dienst.id);
+
+const paginaUrl = new URL(`/diensten/${dienst.id}`, Astro.site).toString();
+
+const schema = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    name: d.titel,
+    description: d.omschrijving,
+    url: paginaUrl,
+    serviceType: d.titel,
+    provider: {
+      '@type': 'HomeAndConstructionBusiness',
+      name: BEDRIJF.naam,
+      telephone: '+31624983463',
+      address: {
+        '@type': 'PostalAddress',
+        addressLocality: BEDRIJF.standplaats,
+        addressCountry: 'NL',
+      },
+    },
+    areaServed: [...WERKGEBIED, ...WERKGEBIED_LANDELIJK].map((plaats) => ({
+      '@type': 'City',
+      name: plaats,
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: d.faq.map((item) => ({
+      '@type': 'Question',
+      name: item.vraag,
+      acceptedAnswer: { '@type': 'Answer', text: item.antwoord },
+    })),
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: 'Home',
+        item: Astro.site?.toString(),
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: 'Diensten',
+        item: new URL('/diensten', Astro.site).toString(),
+      },
+      { '@type': 'ListItem', position: 3, name: d.titel, item: paginaUrl },
+    ],
+  },
+];
+---
+
+<Base titel={d.seoTitel} omschrijving={d.seoOmschrijving}>
+  <script
+    type="application/ld+json"
+    is:inline
+    set:html={JSON.stringify(schema)}
+    slot="head"
+  />
+
+  <!-- ============================ HERO ============================ -->
+  <section class="relative overflow-hidden bg-navy-900 text-white">
+    <div
+      class="absolute inset-0 opacity-[0.06]"
+      style="background-image: repeating-linear-gradient(135deg, #fff 0 1px, transparent 1px 14px);"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="container-page relative pt-8 pb-20 lg:pb-28">
+      <nav aria-label="Kruimelpad" class="text-sm text-navy-200">
+        <ol class="flex flex-wrap items-center gap-2">
+          <li><a href="/" class="hover:text-white hover:underline">Home</a></li>
+          <li aria-hidden="true" class="text-navy-600">/</li>
+          <li>
+            <a href="/diensten" class="hover:text-white hover:underline">Diensten</a>
+          </li>
+          <li aria-hidden="true" class="text-navy-600">/</li>
+          <li class="text-white">{d.kort}</li>
+        </ol>
+      </nav>
+
+      <div class="mt-10 grid items-center gap-12 lg:grid-cols-2 lg:gap-16">
+        <div>
+          <p class="eyebrow flex items-center gap-2 text-gold-500">
+            <Icon naam={d.icoon} class="h-5 w-5" />
+            {d.kort}
+          </p>
+
+          <h1 class="mt-4 text-4xl uppercase sm:text-5xl">{d.kop}</h1>
+
+          <p class="mt-6 max-w-xl text-lg leading-relaxed text-navy-100">
+            {d.inleiding}
+          </p>
+
+          <div class="mt-9 flex flex-wrap gap-3">
+            <Button href="/offerte" formaat="lg">
+              Offerte aanvragen
+              <Icon naam="pijl" class="h-4 w-4" />
+            </Button>
+            <Button href={BEDRIJF.telefoonLink} variant="outline-licht" formaat="lg">
+              <Icon naam="telefoon" class="h-4 w-4" />
+              {BEDRIJF.telefoonWeergave}
+            </Button>
+          </div>
+        </div>
+
+        <Image
+          src={d.foto}
+          alt={d.titel}
+          widths={[560, 1120]}
+          sizes="(min-width: 1024px) 560px, 100vw"
+          loading="eager"
+          fetchpriority="high"
+          class="aspect-[4/3] w-full rounded-2xl border border-white/10 object-cover shadow-2xl"
+        />
+      </div>
+    </div>
+
+    <BrushEdge class="text-white" />
+  </section>
+
+  <!-- ======================= WAT VALT ERONDER ======================= -->
+  <section class="bg-white py-16 lg:py-20" aria-labelledby="punten-kop">
+    <div class="container-page">
+      <h2 id="punten-kop" class="eyebrow text-gold-700">Wat valt hieronder</h2>
+      <ul class="mt-7 grid gap-x-8 gap-y-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          d.punten.map((punt) => (
+            <li class="flex items-start gap-3">
+              <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold-500 text-navy-900">
+                <Icon naam="check" class="h-3.5 w-3.5" />
+              </span>
+              <span class="text-navy-800">{punt}</span>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- ============================ AANPAK ============================ -->
+  <section class="bg-shell py-16 lg:py-24" aria-labelledby="aanpak-kop">
+    <div class="container-page">
+      <h2 id="aanpak-kop" class="text-3xl uppercase sm:text-4xl">Hoe wij het doen</h2>
+
+      <div class="mt-12 grid gap-10 md:grid-cols-3 md:gap-8">
+        {
+          d.aanpak.map((blok, i) => (
+            <div class="relative border-t-4 border-navy-100 pt-6">
+              <span
+                class="absolute -top-9 left-0 font-display text-6xl font-extrabold text-navy-100 select-none"
+                aria-hidden="true"
+              >
+                {String(i + 1).padStart(2, '0')}
+              </span>
+              <h3 class="relative font-display text-lg font-extrabold text-navy-900 uppercase">
+                {blok.titel}
+              </h3>
+              <p class="relative mt-3 leading-relaxed text-navy-700">{blok.tekst}</p>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================== UITGEBREID ========================== -->
+  <section class="bg-white py-16 lg:py-24">
+    <div class="container-page grid gap-14 lg:grid-cols-12 lg:gap-16">
+      <div class="prose-tekst lg:col-span-7">
+        <Content />
+      </div>
+
+      <aside class="lg:col-span-5">
+        <div class="lg:sticky lg:top-28">
+          <div class="rounded-2xl border border-navy-100 bg-shell p-7">
+            <h2 class="font-display text-lg font-extrabold text-navy-900 uppercase">
+              Benieuwd wat het kost?
+            </h2>
+            <p class="mt-2 text-sm leading-relaxed text-navy-700">
+              We komen gratis langs kijken en geven daarna een vaste prijs voor
+              de hele klus. Vrijblijvend, u zit nergens aan vast.
+            </p>
+            <div class="mt-5 flex flex-col gap-3">
+              <Button href="/offerte" formaat="lg">
+                Offerte aanvragen
+                <Icon naam="pijl" class="h-4 w-4" />
+              </Button>
+              <Button
+                href={BEDRIJF.whatsapp}
+                variant="outline-donker"
+                formaat="lg"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Icon naam="whatsapp" class="h-4 w-4" />
+                WhatsApp ons
+              </Button>
+            </div>
+          </div>
+
+          <div class="mt-8 rounded-2xl border border-navy-100 p-7">
+            <h2 class="eyebrow text-gold-700">Werkgebied</h2>
+            <p class="mt-4 text-sm leading-relaxed text-navy-700">
+              {WERKGEBIED.join(' · ')} en de rest van de regio.
+            </p>
+            <p class="mt-3 text-sm leading-relaxed text-navy-700">
+              Voor grotere projecten ook in {WERKGEBIED_LANDELIJK.join(' · ')} en
+              de rest van Nederland.
+            </p>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </section>
+
+  <!-- ============================= FAQ ============================= -->
+  <section class="bg-shell py-16 lg:py-24" aria-labelledby="faq-kop">
+    <div class="container-page max-w-3xl">
+      <p class="eyebrow text-gold-700">Veelgestelde vragen</p>
+      <h2 id="faq-kop" class="mt-3 text-3xl uppercase sm:text-4xl">
+        {d.kort}, wat u vaak vraagt
+      </h2>
+
+      <div class="mt-10 divide-y divide-navy-100 border-y border-navy-100">
+        {
+          d.faq.map((item) => (
+            <details class="group py-5">
+              <summary class="flex cursor-pointer items-start justify-between gap-4 font-display text-base font-extrabold text-navy-900 marker:content-none">
+                {item.vraag}
+                <span
+                  class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-navy-900 text-gold-500 transition-transform duration-300 group-open:rotate-90"
+                  aria-hidden="true"
+                >
+                  <Icon naam="pijl" class="h-3.5 w-3.5" />
+                </span>
+              </summary>
+              <p class="mt-3 pr-10 leading-relaxed text-navy-700">{item.antwoord}</p>
+            </details>
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <!-- ======================= ANDERE DIENSTEN ======================= -->
+  <section class="bg-white py-16 lg:py-20" aria-labelledby="andere-kop">
+    <div class="container-page">
+      <h2 id="andere-kop" class="eyebrow text-gold-700">Ook nodig?</h2>
+      <ul class="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          andere.map((a) => (
+            <li>
+              <a
+                href={`/diensten/${a.id}`}
+                class="group flex h-full items-start gap-4 rounded-xl border border-navy-100 p-5 transition duration-300 ease-out-soft hover:-translate-y-0.5 hover:border-navy-200 hover:shadow-lg"
+              >
+                <span class="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-navy-900 text-gold-500">
+                  <Icon naam={a.data.icoon} class="h-5 w-5" />
+                </span>
+                <span>
+                  <span class="block font-display text-[0.95rem] font-extrabold text-navy-900 uppercase">
+                    {a.data.titel}
+                  </span>
+                  <span class="mt-1 block text-sm leading-relaxed text-navy-700">
+                    {a.data.omschrijving}
+                  </span>
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand
+    kop={`${d.kort} nodig?`}
+    tekst="Vertel kort wat er moet gebeuren. U krijgt binnen één werkdag antwoord, vrijblijvend en zonder kosten."
+  />
+</Base>

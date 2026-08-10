@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://profkluswerk.nl/sitemap-index.xml

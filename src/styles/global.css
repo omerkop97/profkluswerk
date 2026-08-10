@@ -1,0 +1,156 @@
+@import 'tailwindcss';
+
+/* Self-hosted fonts, geen Google Fonts-call (sneller + geen AVG-gedoe) */
+@import '@fontsource-variable/archivo';
+@import '@fontsource-variable/inter';
+
+@theme {
+  /* Huisstijl, afgeleid van de flyer, zie PLAN.md §5 */
+  --color-navy-50: #f2f4f8;
+  --color-navy-100: #dde3ed;
+  --color-navy-200: #b8c4d8;
+  --color-navy-600: #2e4470;
+  --color-navy-700: #24365a;
+  --color-navy-800: #1b2a47;
+  --color-navy-900: #14203a;
+  --color-navy-950: #0d1628;
+
+  --color-gold-300: #f8d783;
+  --color-gold-400: #f5c551;
+  --color-gold-500: #efb22a;
+  --color-gold-600: #d69a15;
+  --color-gold-700: #a97711;
+
+  --color-shell: #f7f8fa;
+
+  --font-display: 'Archivo Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-navy-900);
+    background-color: white;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    font-weight: 800;
+    letter-spacing: -0.015em;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  /* Zichtbare focus voor toetsenbordgebruikers (WCAG 2.4.7) */
+  :focus-visible {
+    outline: 3px solid var(--color-gold-500);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@utility container-page {
+  width: 100%;
+  margin-inline: auto;
+  max-width: 80rem;
+  padding-inline: 1.25rem;
+
+  @media (width >= 48rem) {
+    padding-inline: 2rem;
+  }
+}
+
+/* Opmaak voor tekst die uit Markdown komt */
+@utility prose-tekst {
+  color: var(--color-navy-700);
+  line-height: 1.75;
+
+  & h2 {
+    margin-top: 2.5rem;
+    margin-bottom: 0.75rem;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+    color: var(--color-navy-900);
+  }
+
+  & h2:first-child {
+    margin-top: 0;
+  }
+
+  & h3 {
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+    font-size: 1.125rem;
+    text-transform: uppercase;
+    color: var(--color-navy-900);
+  }
+
+  & p {
+    margin-bottom: 1.125rem;
+  }
+
+  & ul {
+    margin-bottom: 1.125rem;
+    padding-left: 1.25rem;
+    list-style: disc;
+  }
+
+  & li {
+    margin-bottom: 0.375rem;
+  }
+
+  & strong {
+    font-weight: 600;
+    color: var(--color-navy-900);
+  }
+
+  & a {
+    font-weight: 600;
+    color: var(--color-navy-900);
+    text-decoration: underline;
+    text-underline-offset: 3px;
+    text-decoration-color: var(--color-gold-500);
+    text-decoration-thickness: 2px;
+  }
+
+  & a:hover {
+    color: var(--color-gold-700);
+  }
+}
+
+/* Kleine kapitalen-kop, zoals de labels op de flyer */
+@utility eyebrow {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 0.8125rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}

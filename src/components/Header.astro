@@ -1,0 +1,107 @@
+---
+import { BEDRIJF, NAV } from '../consts';
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+import Button from './Button.astro';
+
+const pad = Astro.url.pathname;
+const isActief = (href: string) => pad === href || pad.startsWith(href + '/');
+---
+
+<header class="sticky top-0 z-50 border-b border-navy-100 bg-white/95 backdrop-blur">
+  <div class="container-page flex h-[4.5rem] items-center justify-between gap-6">
+    <a href="/" class="shrink-0" aria-label={`${BEDRIJF.naam}, naar de homepage`}>
+      <Logo />
+    </a>
+
+    <nav aria-label="Hoofdmenu" class="hidden lg:block">
+      <ul class="flex items-center gap-8">
+        {
+          NAV.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={isActief(item.href) ? 'page' : undefined}
+                class:list={[
+                  'font-display text-[0.82rem] font-bold tracking-wide uppercase transition-colors',
+                  isActief(item.href)
+                    ? 'text-gold-700'
+                    : 'text-navy-800 hover:text-gold-700',
+                ]}
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div class="hidden items-center gap-4 lg:flex">
+      <a
+        href={BEDRIJF.telefoonLink}
+        class="group flex items-center gap-2 text-navy-800 transition-colors hover:text-gold-700"
+      >
+        <span
+          class="flex h-9 w-9 items-center justify-center rounded-full bg-navy-50 text-navy-800 transition-colors group-hover:bg-gold-500 group-hover:text-navy-900"
+        >
+          <Icon naam="telefoon" class="h-4 w-4" />
+        </span>
+        <span class="font-display text-sm font-bold">{BEDRIJF.telefoonWeergave}</span>
+      </a>
+      <Button href="/offerte">Offerte aanvragen</Button>
+    </div>
+
+    <button
+      type="button"
+      id="menu-knop"
+      class="flex h-11 w-11 items-center justify-center rounded-lg border border-navy-100 text-navy-800 lg:hidden"
+      aria-expanded="false"
+      aria-controls="mobiel-menu"
+    >
+      <span class="sr-only">Menu openen</span>
+      <Icon naam="menu" class="h-6 w-6" data-menu-open />
+      <Icon naam="sluiten" class="hidden h-6 w-6" data-menu-close />
+    </button>
+  </div>
+
+  <div id="mobiel-menu" class="hidden border-t border-navy-100 bg-white lg:hidden">
+    <nav aria-label="Hoofdmenu mobiel" class="container-page py-5">
+      <ul class="flex flex-col divide-y divide-navy-100">
+        {
+          NAV.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                aria-current={isActief(item.href) ? 'page' : undefined}
+                class="block py-3.5 font-display text-base font-bold tracking-wide text-navy-800 uppercase"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+      <div class="mt-5 flex flex-col gap-3">
+        <Button href="/offerte" formaat="lg">Offerte aanvragen</Button>
+        <Button href={BEDRIJF.telefoonLink} variant="outline-donker" formaat="lg">
+          <Icon naam="telefoon" class="h-4 w-4" />
+          {BEDRIJF.telefoonWeergave}
+        </Button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const knop = document.getElementById('menu-knop');
+  const menu = document.getElementById('mobiel-menu');
+
+  knop?.addEventListener('click', () => {
+    const open = knop.getAttribute('aria-expanded') === 'true';
+    knop.setAttribute('aria-expanded', String(!open));
+    menu?.classList.toggle('hidden', open);
+    knop.querySelector('[data-menu-open]')?.classList.toggle('hidden', !open);
+    knop.querySelector('[data-menu-close]')?.classList.toggle('hidden', open);
+  });
+</script>

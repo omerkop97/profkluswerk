@@ -1,0 +1,170 @@
+---
+import type { IconNaam } from '../consts';
+
+export type ExtraIcon =
+  | 'telefoon'
+  | 'whatsapp'
+  | 'check'
+  | 'pijl'
+  | 'medaille'
+  | 'handdruk'
+  | 'euro'
+  | 'klok'
+  | 'pin'
+  | 'menu'
+  | 'sluiten'
+  | 'mail';
+
+interface Props {
+  naam: IconNaam | ExtraIcon;
+  class?: string;
+  [key: string]: unknown;
+}
+
+const { naam, class: klasse = 'h-6 w-6', ...rest } = Astro.props;
+---
+
+<svg
+  class={klasse}
+  {...rest}
+  viewBox="0 0 24 24"
+  fill="none"
+  stroke="currentColor"
+  stroke-width="1.75"
+  stroke-linecap="round"
+  stroke-linejoin="round"
+  aria-hidden="true"
+  focusable="false"
+>
+  {naam === 'roller' && (
+    <>
+      <rect x="3" y="4" width="13" height="5" rx="1.2" />
+      <path d="M16 6.5h3.2A1.8 1.8 0 0 1 21 8.3V11a1 1 0 0 1-1 1h-6a1 1 0 0 0-1 1v1.5" />
+      <rect x="11.4" y="14.5" width="3.2" height="5.5" rx="1.1" />
+    </>
+  )}
+
+  {naam === 'huis' && (
+    <>
+      <path d="M3.5 10.5 12 3.5l8.5 7" />
+      <path d="M5.5 9.6V20h13V9.6" />
+      <path d="M10 20v-5.2h4V20" />
+    </>
+  )}
+
+  {naam === 'tegels' && (
+    <>
+      <rect x="3.5" y="3.5" width="7" height="7" rx="1" />
+      <rect x="13.5" y="3.5" width="7" height="7" rx="1" />
+      <rect x="3.5" y="13.5" width="7" height="7" rx="1" />
+      <rect x="13.5" y="13.5" width="7" height="7" rx="1" />
+    </>
+  )}
+
+  {naam === 'laminaat' && (
+    <>
+      <path d="M12 3.2 21.5 8 12 12.8 2.5 8Z" />
+      <path d="M2.5 12 12 16.8 21.5 12" />
+      <path d="M2.5 16 12 20.8 21.5 16" />
+    </>
+  )}
+
+  {naam === 'bestrating' && (
+    <>
+      <path d="M2.8 8.6 12 4l9.2 4.6-9.2 4.6Z" />
+      <path d="M6.5 13.4 3 15.2l9 4.5 9-4.5-3.5-1.8" />
+    </>
+  )}
+
+  {naam === 'gereedschap' && (
+    <>
+      <path d="M14.5 6.2a3.6 3.6 0 0 0 4.8 4.6l1.6 1.6-3.4 3.4-1.7-1.7a3.6 3.6 0 0 0-4.7-4.7Z" />
+      <path d="m10.6 13.4-6 6a1.8 1.8 0 0 0 2.6 2.5l5.9-5.9" />
+      <path d="M3.5 4.2 6 3l3.8 3.8L8.6 8 4.8 4.2Z" />
+    </>
+  )}
+
+  {naam === 'telefoon' && (
+    <path
+      d="M6.2 3.5h3l1.5 3.7-1.9 1.4a11.5 11.5 0 0 0 5.1 5.1l1.4-1.9 3.7 1.5v3a1.7 1.7 0 0 1-1.9 1.7A15.5 15.5 0 0 1 4.5 5.4 1.7 1.7 0 0 1 6.2 3.5Z"
+    />
+  )}
+
+  {naam === 'whatsapp' && (
+    <>
+      <path
+        d="M3.6 20.4l1.3-4.3A8.2 8.2 0 1 1 8 19.2Z"
+      />
+      <path
+        d="M9 8.4c.3-.1.6 0 .8.4l.6 1.2c.1.3.1.5-.1.7l-.5.6a5.6 5.6 0 0 0 2.9 2.9l.6-.5c.2-.2.4-.2.7-.1l1.2.6c.4.2.5.5.4.8-.2.7-.9 1.3-1.7 1.3-2.9 0-6.2-3.3-6.2-6.2 0-.8.6-1.5 1.3-1.7Z"
+      />
+    </>
+  )}
+
+  {naam === 'check' && <path d="m4.5 12.5 5 5 10-11" />}
+
+  {naam === 'pijl' && (
+    <>
+      <path d="M4 12h15" />
+      <path d="m13 6 6 6-6 6" />
+    </>
+  )}
+
+  {naam === 'medaille' && (
+    <>
+      <circle cx="12" cy="9.5" r="5.5" />
+      <path d="m8.5 14.4-1.3 6 4.8-2.4 4.8 2.4-1.3-6" />
+    </>
+  )}
+
+  {naam === 'handdruk' && (
+    <>
+      <path d="m2.5 11.5 3-3 3.2 1.4 2.6-1.7 2.7 1.7 3.4-1.4 3 3" />
+      <path d="M8.7 9.9 6.2 12.7a1.6 1.6 0 0 0 2.3 2.2l.9-.9 2 1.9a1.5 1.5 0 0 0 2.1 0l3.9-3.6" />
+    </>
+  )}
+
+  {naam === 'euro' && (
+    <>
+      <path d="M17 6.6a6.2 6.2 0 0 0-8.9 2.2 7 7 0 0 0 0 6.4A6.2 6.2 0 0 0 17 17.4" />
+      <path d="M4.5 10.4h8" />
+      <path d="M4.5 13.6h8" />
+    </>
+  )}
+
+  {naam === 'klok' && (
+    <>
+      <circle cx="12" cy="12" r="8.5" />
+      <path d="M12 7.2V12l3.2 2" />
+    </>
+  )}
+
+  {naam === 'pin' && (
+    <>
+      <path d="M12 21s6.5-5.6 6.5-10.3a6.5 6.5 0 1 0-13 0C5.5 15.4 12 21 12 21Z" />
+      <circle cx="12" cy="10.5" r="2.4" />
+    </>
+  )}
+
+  {naam === 'mail' && (
+    <>
+      <rect x="2.8" y="5" width="18.4" height="14" rx="2" />
+      <path d="m3.5 6.8 8.5 6 8.5-6" />
+    </>
+  )}
+
+  {naam === 'menu' && (
+    <>
+      <path d="M4 7h16" />
+      <path d="M4 12h16" />
+      <path d="M4 17h16" />
+    </>
+  )}
+
+  {naam === 'sluiten' && (
+    <>
+      <path d="m6 6 12 12" />
+      <path d="m18 6-12 12" />
+    </>
+  )}
+</svg>

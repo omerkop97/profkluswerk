@@ -1,0 +1,386 @@
+---
+import Base from '../layouts/Base.astro';
+import Button from '../components/Button.astro';
+import Icon from '../components/Icon.astro';
+import BrushEdge from '../components/BrushEdge.astro';
+import { Image } from 'astro:assets';
+import { BEDRIJF, USPS, WERKWIJZE, WERKGEBIED, WERKGEBIED_LANDELIJK } from '../consts';
+import { alleDiensten } from '../lib/diensten';
+
+const diensten = await alleDiensten();
+
+/*
+ * TIJDELIJK BEELD: stockfoto's van Pexels, puur om de preview te kunnen
+ * beoordelen. MOET vervangen worden door eigen projectfoto's voor livegang.
+ * Stock op een klussite kost geloofwaardigheid (PLAN.md §7 en §10, punt 4).
+ * Bronnen staan in src/assets/stock/BRONNEN.md.
+ */
+import heroWoning from '../assets/stock/hero-woning.jpg';
+import detailTegelwerk from '../assets/stock/detail-tegelwerk.jpg';
+import detailSchilderwerk from '../assets/stock/detail-schilderwerk.jpg';
+import detailLaminaat from '../assets/stock/detail-laminaat.jpg';
+import detailBestrating from '../assets/stock/detail-bestrating.jpg';
+
+const detailBeelden = [
+  { bron: detailTegelwerk, alt: 'Tegels worden strak op maat gezet' },
+  { bron: detailSchilderwerk, alt: 'Schilderwerk van een binnenwand' },
+  { bron: detailLaminaat, alt: 'Laminaatplanken worden gelegd' },
+  { bron: detailBestrating, alt: 'Strak gelegde sierbestrating' },
+];
+
+const uspIconen = ['medaille', 'handdruk', 'euro', 'klok'] as const;
+
+const beloftes = [
+  'Gratis advies & offerte',
+  'Reactie binnen 1 werkdag',
+  'Vaste prijs vooraf',
+];
+---
+
+<Base
+  titel="Klusbedrijf Arnhem | Onderhoud & renovatie | Prof Kluswerk"
+  omschrijving="Klusbedrijf uit Arnhem voor onderhoud, renovatie en afwerking. Schilderwerk, tegels, laminaat, bestrating en complete verbouwingen. Gratis advies en offerte."
+>
+  <!-- ============================ HERO ============================ -->
+  <section class="relative overflow-hidden bg-navy-900 text-white">
+    <div
+      class="absolute inset-0 opacity-[0.06]"
+      style="background-image: repeating-linear-gradient(135deg, #fff 0 1px, transparent 1px 14px);"
+      aria-hidden="true"
+    >
+    </div>
+    <div
+      class="absolute -top-40 -right-40 h-[34rem] w-[34rem] rounded-full bg-gold-500/10 blur-3xl"
+      aria-hidden="true"
+    >
+    </div>
+
+    <!--
+      Op mobiel staat de foto boven de tekst. Anders zie je pas na een halve
+      scroll beeld, en dit is grotendeels mobiel verkeer (PLAN.md §8).
+    -->
+    <div class="container-page relative grid items-center gap-10 pt-10 pb-24 lg:grid-cols-2 lg:gap-16 lg:pt-24 lg:pb-32">
+      <div class="order-2 lg:order-1">
+        <p class="eyebrow flex items-center gap-2 text-gold-500">
+          <Icon naam="pin" class="h-4 w-4" />
+          Klusbedrijf uit {BEDRIJF.standplaats}
+        </p>
+
+        <h1 class="mt-5 text-4xl leading-[0.95] uppercase sm:text-5xl lg:text-6xl">
+          Onderhoud &amp;<br />renovatie
+          <span class="mt-2 block text-gold-500">binnen &amp; buiten</span>
+        </h1>
+
+        <p
+          class="eyebrow mt-6 inline-block border-2 border-white/25 px-3 py-1.5 text-[0.7rem] text-white"
+        >
+          Voor particulieren &amp; bedrijven
+        </p>
+
+        <p class="mt-6 max-w-xl text-lg leading-relaxed text-navy-100">
+          Wij verzorgen professioneel onderhoud en renovatie van A tot Z.
+          Kwaliteit, betrouwbaarheid en strakke afwerking. Dat is Prof Kluswerk.
+        </p>
+
+        <div class="mt-9 flex flex-wrap gap-3">
+          <Button href="/offerte" formaat="lg">
+            Gratis offerte aanvragen
+            <Icon naam="pijl" class="h-4 w-4" />
+          </Button>
+          <Button href={BEDRIJF.telefoonLink} variant="outline-licht" formaat="lg">
+            <Icon naam="telefoon" class="h-4 w-4" />
+            {BEDRIJF.telefoonWeergave}
+          </Button>
+        </div>
+
+        <ul class="mt-9 flex flex-wrap gap-x-7 gap-y-3">
+          {
+            beloftes.map((belofte) => (
+              <li class="flex items-center gap-2 text-sm font-medium text-navy-100">
+                <Icon naam="check" class="h-4 w-4 shrink-0 text-gold-500" />
+                {belofte}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="relative order-1 lg:order-2">
+        <Image
+          src={heroWoning}
+          alt="Vrijstaande woning met strak aangelegde oprit"
+          widths={[560, 1100]}
+          sizes="(min-width: 1024px) 560px, 100vw"
+          loading="eager"
+          fetchpriority="high"
+          class="aspect-[16/10] w-full rounded-2xl border border-white/10 object-cover shadow-2xl lg:aspect-[4/3]"
+        />
+        <!-- gouden kwaststreek-badge, zoals op de flyer -->
+        <div
+          class="absolute -bottom-6 -left-4 rotate-[-3deg] rounded-lg bg-gold-500 px-6 py-3 shadow-xl sm:-left-6"
+        >
+          <p class="font-display text-base leading-tight font-extrabold text-navy-900 uppercase sm:text-lg">
+            Vakwerk<br />tot in detail!
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <BrushEdge class="text-white" />
+  </section>
+
+  <!-- ============================ USP's ============================ -->
+  <section class="bg-white pt-4 pb-16 lg:pb-20" aria-label="Waarom Prof Kluswerk">
+    <div class="container-page grid gap-x-8 gap-y-10 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        USPS.map((usp, i) => (
+          <div class="flex gap-4">
+            <span class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-navy-900 text-gold-500">
+              <Icon naam={uspIconen[i]} class="h-6 w-6" />
+            </span>
+            <div>
+              <h2 class="font-display text-base font-extrabold tracking-wide text-navy-900 uppercase">
+                {usp.titel}
+              </h2>
+              <p class="mt-1.5 text-sm leading-relaxed text-navy-700">{usp.tekst}</p>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </section>
+
+  <!-- ========================== DIENSTEN ========================== -->
+  <section class="bg-shell py-20 lg:py-28" aria-labelledby="diensten-kop">
+    <div class="container-page">
+      <div class="max-w-2xl">
+        <p class="eyebrow text-gold-700">Wat wij doen</p>
+        <h2 id="diensten-kop" class="mt-3 text-3xl uppercase sm:text-4xl">
+          Zes vakgebieden,<br class="hidden sm:block" /> één aanspreekpunt
+        </h2>
+        <p class="mt-5 text-lg leading-relaxed text-navy-700">
+          Van een enkele klus tot een complete renovatie. U hoeft niet vier
+          verschillende bedrijven te bellen, wij regelen het van begin tot eind.
+        </p>
+      </div>
+
+      <ul class="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          diensten.map((dienst) => (
+            <li>
+              <a
+                href={`/diensten/${dienst.id}`}
+                class="group flex h-full flex-col overflow-hidden rounded-2xl border border-navy-100 bg-white transition duration-300 ease-out-soft hover:-translate-y-1 hover:border-navy-200 hover:shadow-xl"
+              >
+                <div class="relative">
+                  <Image
+                    src={dienst.data.foto}
+                    alt={dienst.data.titel}
+                    widths={[380, 760]}
+                    sizes="(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw"
+                    class="aspect-[16/10] w-full object-cover"
+                  />
+                  <span class="absolute -bottom-6 left-5 flex h-12 w-12 items-center justify-center rounded-full bg-navy-900 text-gold-500 shadow-lg ring-4 ring-white">
+                    <Icon naam={dienst.data.icoon} class="h-6 w-6" />
+                  </span>
+                </div>
+
+                <div class="flex flex-1 flex-col p-6 pt-10">
+                  <h3 class="font-display text-lg font-extrabold text-navy-900 uppercase">
+                    {dienst.data.titel}
+                  </h3>
+                  <p class="mt-2.5 text-sm leading-relaxed text-navy-700">
+                    {dienst.data.omschrijving}
+                  </p>
+                  <span class="mt-5 flex items-center gap-2 font-display text-[0.78rem] font-bold tracking-wide text-navy-900 uppercase">
+                    Meer over {dienst.data.kort.toLowerCase()}
+                    <Icon
+                      naam="pijl"
+                      class="h-4 w-4 text-gold-600 transition-transform duration-300 group-hover:translate-x-1"
+                    />
+                  </span>
+                </div>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <!-- ===================== ALLES ONDER ÉÉN DAK ===================== -->
+  <section class="relative bg-navy-900 text-white">
+    <BrushEdge richting="boven" class="text-shell" />
+
+    <div class="container-page grid items-center gap-14 py-16 lg:grid-cols-12 lg:py-24">
+      <div class="lg:col-span-7">
+        <p class="eyebrow text-gold-500">Alles onder één dak</p>
+        <h2 class="mt-3 text-3xl uppercase sm:text-4xl">
+          Eén aanspreekpunt voor<br class="hidden sm:block" /> al uw werkzaamheden
+        </h2>
+        <p class="mt-5 max-w-2xl text-lg leading-relaxed text-navy-100">
+          De meeste klusbedrijven doen één ding. Wij pakken de hele klus op:
+          slopen, tegelen, schilderen, vloer erin en de boel netjes achterlaten.
+          Dat scheelt u planning, gedoe en losse rekeningen.
+        </p>
+
+        <ul class="mt-8 grid gap-4 sm:grid-cols-2">
+          {
+            [
+              'Van kleine klus tot complete renovatie',
+              'Vaste contactpersoon, geen doorverwijzingen',
+              'Wij stemmen de werkzaamheden op elkaar af',
+              'Particulier én zakelijk',
+            ].map((punt) => (
+              <li class="flex items-start gap-3">
+                <span class="mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gold-500 text-navy-900">
+                  <Icon naam="check" class="h-3.5 w-3.5" />
+                </span>
+                <span class="text-navy-100">{punt}</span>
+              </li>
+            ))
+          }
+        </ul>
+
+        <div class="mt-10">
+          <Button href="/offerte" formaat="lg">
+            Bespreek uw project
+            <Icon naam="pijl" class="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+
+      <div class="lg:col-span-5">
+        <div class="grid grid-cols-2 gap-4">
+          {
+            detailBeelden.map((beeld, i) => (
+              <Image
+                src={beeld.bron}
+                alt={beeld.alt}
+                widths={[220, 440]}
+                sizes="(min-width: 1024px) 220px, 40vw"
+                class:list={[
+                  'aspect-square rounded-xl border border-white/10 object-cover',
+                  i % 2 === 1 && 'mt-8',
+                ]}
+              />
+            ))
+          }
+        </div>
+      </div>
+    </div>
+
+    <BrushEdge class="text-white" />
+  </section>
+
+  <!-- ========================== WERKWIJZE ========================== -->
+  <section class="bg-white py-16 lg:py-24" aria-labelledby="werkwijze-kop">
+    <div class="container-page">
+      <div class="max-w-2xl">
+        <p class="eyebrow text-gold-700">Hoe het werkt</p>
+        <h2 id="werkwijze-kop" class="mt-3 text-3xl uppercase sm:text-4xl">
+          In drie stappen naar een offerte
+        </h2>
+      </div>
+
+      <ol class="mt-14 grid gap-10 md:grid-cols-3 md:gap-8">
+        {
+          WERKWIJZE.map((stap) => (
+            <li class="relative border-t-4 border-navy-100 pt-6">
+              <span
+                class="absolute -top-9 left-0 font-display text-6xl font-extrabold text-navy-50 select-none"
+                aria-hidden="true"
+              >
+                {stap.stap}
+              </span>
+              <h3 class="relative font-display text-lg font-extrabold text-navy-900 uppercase">
+                {stap.titel}
+              </h3>
+              <p class="relative mt-3 leading-relaxed text-navy-700">{stap.tekst}</p>
+            </li>
+          ))
+        }
+      </ol>
+    </div>
+  </section>
+
+  <!-- ========================= WERKGEBIED ========================= -->
+  <section class="bg-shell py-16 lg:py-24" aria-labelledby="werkgebied-kop">
+    <div class="container-page grid gap-12 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-5">
+        <p class="eyebrow text-gold-700">Werkgebied</p>
+        <h2 id="werkgebied-kop" class="mt-3 text-3xl uppercase sm:text-4xl">
+          Thuis in Arnhem<br class="hidden sm:block" /> en omstreken
+        </h2>
+        <p class="mt-5 text-lg leading-relaxed text-navy-700">
+          Wij werken vanuit {BEDRIJF.standplaats} en zijn dagelijks in de regio te
+          vinden. Voor grotere projecten komen we door heel Nederland. Twijfelt u
+          of u binnen ons gebied valt? Bel gerust even om te overleggen.
+        </p>
+      </div>
+
+      <div class="lg:col-span-7">
+        <h3 class="eyebrow text-navy-600">Dagelijks in de regio</h3>
+        <ul class="mt-4 flex flex-wrap gap-2.5">
+          {
+            WERKGEBIED.map((plaats) => (
+              <li class="flex items-center gap-1.5 rounded-full border border-navy-100 bg-white px-4 py-2 text-sm font-medium text-navy-800">
+                <Icon naam="pin" class="h-3.5 w-3.5 text-gold-600" />
+                {plaats}
+              </li>
+            ))
+          }
+        </ul>
+
+        <h3 class="eyebrow mt-8 text-navy-600">Voor grotere projecten ook actief in</h3>
+        <ul class="mt-4 flex flex-wrap gap-2">
+          {
+            WERKGEBIED_LANDELIJK.map((plaats) => (
+              <li class="rounded-full bg-white/70 px-3.5 py-1.5 text-sm text-navy-700">
+                {plaats}
+              </li>
+            ))
+          }
+          <li class="rounded-full bg-white/70 px-3.5 py-1.5 text-sm text-navy-700">
+            en de rest van Nederland
+          </li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================= CTA ============================= -->
+  <section class="bg-gold-500" aria-labelledby="cta-kop">
+    <div
+      class="container-page flex flex-col items-start gap-8 py-14 lg:flex-row lg:items-center lg:justify-between lg:py-16"
+    >
+      <div>
+        <h2 id="cta-kop" class="text-3xl text-navy-900 uppercase sm:text-4xl">
+          Gratis advies &amp; offerte
+        </h2>
+        <p class="mt-3 max-w-xl text-lg leading-relaxed text-navy-900/80">
+          Vertel kort wat u wilt laten doen. U krijgt binnen één werkdag
+          antwoord, vrijblijvend en zonder kosten.
+        </p>
+      </div>
+
+      <div class="flex flex-col gap-3 sm:flex-row lg:shrink-0">
+        <Button href="/offerte" variant="donker" formaat="lg">
+          Offerte aanvragen
+          <Icon naam="pijl" class="h-4 w-4" />
+        </Button>
+        <Button
+          href={BEDRIJF.whatsapp}
+          variant="outline-donker"
+          formaat="lg"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="border-navy-900/25 text-navy-900 hover:border-navy-900 hover:bg-navy-900/5"
+        >
+          <Icon naam="whatsapp" class="h-4 w-4" />
+          WhatsApp
+        </Button>
+      </div>
+    </div>
+  </section>
+</Base>

@@ -1,0 +1,45 @@
+---
+import Button from './Button.astro';
+import Icon from './Icon.astro';
+import { BEDRIJF } from '../consts';
+
+/**
+ * Tijdelijke pagina voor routes uit fase 3–5 (zie PLAN.md §9).
+ * Voorkomt 404's in de preview.
+ */
+interface Props {
+  kop: string;
+  fase: string;
+}
+
+const { kop, fase } = Astro.props;
+---
+
+<section class="bg-shell py-20 lg:py-28">
+  <div class="container-page max-w-2xl text-center">
+    <span
+      class="inline-flex h-16 w-16 items-center justify-center rounded-full bg-navy-900 text-gold-500"
+    >
+      <Icon naam="gereedschap" class="h-8 w-8" />
+    </span>
+
+    <h1 class="mt-7 text-3xl uppercase sm:text-4xl">{kop}</h1>
+
+    <p class="eyebrow mt-4 inline-block rounded-full bg-navy-900/8 px-4 py-1.5 text-navy-700">
+      In aanbouw, {fase}
+    </p>
+
+    <p class="mt-6 text-lg leading-relaxed text-navy-700">
+      Deze pagina wordt in een volgende fase opgeleverd. Wilt u nu al iets
+      bespreken? Bel of app gerust, dat mag altijd.
+    </p>
+
+    <div class="mt-9 flex flex-wrap justify-center gap-3">
+      <Button href={BEDRIJF.telefoonLink} formaat="lg">
+        <Icon naam="telefoon" class="h-4 w-4" />
+        {BEDRIJF.telefoonWeergave}
+      </Button>
+      <Button href="/" variant="outline-donker" formaat="lg">Terug naar home</Button>
+    </div>
+  </div>
+</section>

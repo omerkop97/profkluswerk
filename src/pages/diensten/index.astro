@@ -1,0 +1,97 @@
+---
+import { Image } from 'astro:assets';
+import Base from '../../layouts/Base.astro';
+import Icon from '../../components/Icon.astro';
+import BrushEdge from '../../components/BrushEdge.astro';
+import CtaBand from '../../components/CtaBand.astro';
+import { alleDiensten } from '../../lib/diensten';
+import { WERKGEBIED } from '../../consts';
+
+const diensten = await alleDiensten();
+---
+
+<Base
+  titel="Diensten | Klusbedrijf Arnhem | Prof Kluswerk"
+  omschrijving="Alle diensten van Prof Kluswerk: schilderwerk, onderhoud en renovatie, tegelwerk, laminaat, bestrating en complete verbouwingen in Arnhem en omstreken."
+>
+  <section class="relative bg-navy-900 text-white">
+    <div
+      class="absolute inset-0 opacity-[0.06]"
+      style="background-image: repeating-linear-gradient(135deg, #fff 0 1px, transparent 1px 14px);"
+      aria-hidden="true"
+    >
+    </div>
+
+    <div class="container-page relative pt-14 pb-20 lg:pt-20 lg:pb-28">
+      <p class="eyebrow text-gold-500">Wat wij doen</p>
+      <h1 class="mt-3 max-w-3xl text-4xl uppercase sm:text-5xl">
+        Zes vakgebieden, één aanspreekpunt
+      </h1>
+      <p class="mt-5 max-w-2xl text-lg leading-relaxed text-navy-100">
+        Van een losse klus tot een complete renovatie. Doordat wij de vakken zelf
+        in huis hebben, hoeft u niet vier bedrijven op elkaar af te stemmen.
+        Werkzaam in {WERKGEBIED.slice(0, 4).join(', ')} en de rest van de regio.
+      </p>
+    </div>
+
+    <BrushEdge class="text-white" />
+  </section>
+
+  <section class="bg-white pb-20 lg:pb-28">
+    <div class="container-page">
+      <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {
+          diensten.map((dienst) => (
+            <li>
+              <a
+                href={`/diensten/${dienst.id}`}
+                class="group flex h-full flex-col overflow-hidden rounded-2xl border border-navy-100 bg-white transition duration-300 ease-out-soft hover:-translate-y-1 hover:border-navy-200 hover:shadow-xl"
+              >
+                <div class="relative">
+                  <Image
+                    src={dienst.data.foto}
+                    alt={dienst.data.titel}
+                    widths={[380, 760]}
+                    sizes="(min-width: 1024px) 380px, (min-width: 640px) 50vw, 100vw"
+                    class="aspect-[16/10] w-full object-cover"
+                  />
+                  <span class="absolute -bottom-6 left-5 flex h-12 w-12 items-center justify-center rounded-full bg-navy-900 text-gold-500 shadow-lg ring-4 ring-white">
+                    <Icon naam={dienst.data.icoon} class="h-6 w-6" />
+                  </span>
+                </div>
+
+                <div class="flex flex-1 flex-col p-6 pt-10">
+                  <h2 class="font-display text-lg font-extrabold text-navy-900 uppercase">
+                    {dienst.data.titel}
+                  </h2>
+                  <p class="mt-2.5 text-sm leading-relaxed text-navy-700">
+                    {dienst.data.omschrijving}
+                  </p>
+
+                  <ul class="mt-4 space-y-1.5">
+                    {dienst.data.punten.slice(0, 3).map((punt) => (
+                      <li class="flex items-start gap-2 text-sm text-navy-700">
+                        <Icon naam="check" class="mt-1 h-3.5 w-3.5 shrink-0 text-gold-600" />
+                        {punt}
+                      </li>
+                    ))}
+                  </ul>
+
+                  <span class="mt-5 flex items-center gap-2 font-display text-[0.78rem] font-bold tracking-wide text-navy-900 uppercase">
+                    Meer over {dienst.data.kort.toLowerCase()}
+                    <Icon
+                      naam="pijl"
+                      class="h-4 w-4 text-gold-600 transition-transform duration-300 group-hover:translate-x-1"
+                    />
+                  </span>
+                </div>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CtaBand />
+</Base>

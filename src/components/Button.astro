@@ -1,0 +1,47 @@
+---
+interface Props {
+  href?: string;
+  variant?: 'primair' | 'donker' | 'outline-licht' | 'outline-donker';
+  formaat?: 'md' | 'lg';
+  class?: string;
+  [key: string]: unknown;
+}
+
+const {
+  href,
+  variant = 'primair',
+  formaat = 'md',
+  class: klasse = '',
+  ...rest
+} = Astro.props;
+
+const basis =
+  'inline-flex items-center justify-center gap-2 rounded-lg font-display font-bold ' +
+  'tracking-wide uppercase transition duration-200 ease-out-soft ' +
+  'hover:-translate-y-0.5 active:translate-y-0 whitespace-nowrap';
+
+const maten = {
+  md: 'px-5 py-3 text-[0.8rem]',
+  lg: 'px-7 py-4 text-sm',
+};
+
+/*
+ * Goud op wit haalt WCAG AA niet (~1,9:1). Goud daarom altijd als vlak
+ * met navy tekst erop (~8:1), nooit als tekstkleur. Zie PLAN.md §5.
+ */
+const varianten = {
+  primair: 'bg-gold-500 text-navy-900 shadow-lg shadow-gold-500/25 hover:bg-gold-400',
+  donker: 'bg-navy-800 text-white shadow-lg shadow-navy-900/20 hover:bg-navy-700',
+  'outline-licht':
+    'border-2 border-white/35 text-white hover:border-white hover:bg-white/10',
+  'outline-donker':
+    'border-2 border-navy-200 text-navy-800 hover:border-navy-800 hover:bg-navy-50',
+};
+
+const klassen = `${basis} ${maten[formaat]} ${varianten[variant]} ${klasse}`;
+const Tag = href ? 'a' : 'button';
+---
+
+<Tag class={klassen} href={href} {...rest}>
+  <slot />
+</Tag>

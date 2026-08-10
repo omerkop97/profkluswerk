@@ -1,0 +1,52 @@
+---
+import Icon from './Icon.astro';
+import type { IconNaam } from '../consts';
+import type { ExtraIcon } from './Icon.astro';
+
+/**
+ * Tijdelijke beeldvuller. Vervangen door echte projectfoto's
+ * zodra die er zijn (PLAN.md §10, punt 4).
+ */
+interface Props {
+  label: string;
+  icoon?: IconNaam | ExtraIcon;
+  class?: string;
+  toon?: 'licht' | 'donker';
+}
+
+const {
+  label,
+  icoon = 'gereedschap',
+  class: klasse = '',
+  toon = 'licht',
+} = Astro.props;
+
+const donker = toon === 'donker';
+---
+
+<div
+  class={`relative flex flex-col items-center justify-center overflow-hidden ${
+    donker ? 'bg-navy-800 text-navy-100' : 'bg-navy-50 text-navy-600'
+  } ${klasse}`}
+  role="img"
+  aria-label={`Placeholder: ${label}`}
+>
+  <div
+    class="absolute inset-0 opacity-[0.13]"
+    style={`background-image: repeating-linear-gradient(135deg, currentColor 0 2px, transparent 2px 12px);`}
+    aria-hidden="true"
+  >
+  </div>
+
+  <Icon naam={icoon} class="relative h-9 w-9 opacity-70" />
+  <span
+    class={`eyebrow relative mt-3 px-4 text-center text-[0.6rem] ${
+      donker ? 'text-navy-200' : 'text-navy-600'
+    }`}>{label}</span
+  >
+  <span
+    class={`relative mt-1.5 rounded-full px-2.5 py-0.5 text-[0.55rem] font-semibold tracking-wider uppercase ${
+      donker ? 'bg-white/10 text-white/70' : 'bg-navy-900/8 text-navy-600'
+    }`}>Foto volgt</span
+  >
+</div>

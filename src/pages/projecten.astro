@@ -1,0 +1,18 @@
+---
+import Base from '../layouts/Base.astro';
+import Binnenkort from '../components/Binnenkort.astro';
+
+/*
+ * Deze pagina staat niet in het menu en niet in de sitemap. Ze bestaat alleen
+ * zodat oude of gedeelde links niet doodlopen. Zodra er echte projectfoto's
+ * zijn, bouwen we hier de galerij en zetten we hem terug in NAV.
+ */
+---
+
+<Base
+  titel="Projecten | Prof Kluswerk Arnhem"
+  omschrijving="Een greep uit ons werk: schilderwerk, tegelwerk, laminaat, bestrating en renovaties in Arnhem en omstreken."
+  noindex
+>
+  <Binnenkort kop="Projecten" fase="binnenkort online" />
+</Base>

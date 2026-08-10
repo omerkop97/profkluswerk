@@ -1,0 +1,44 @@
+---
+import Button from './Button.astro';
+import Icon from './Icon.astro';
+import { BEDRIJF } from '../consts';
+
+interface Props {
+  kop?: string;
+  tekst?: string;
+}
+
+const {
+  kop = 'Gratis advies & offerte',
+  tekst = 'Vertel kort wat u wilt laten doen. U krijgt binnen één werkdag antwoord, vrijblijvend en zonder kosten.',
+} = Astro.props;
+---
+
+<section class="bg-gold-500" aria-labelledby="cta-band-kop">
+  <div
+    class="container-page flex flex-col items-start gap-8 py-14 lg:flex-row lg:items-center lg:justify-between lg:py-16"
+  >
+    <div>
+      <h2 id="cta-band-kop" class="text-3xl text-navy-900 uppercase sm:text-4xl">
+        {kop}
+      </h2>
+      <p class="mt-3 max-w-xl text-lg leading-relaxed text-navy-900/80">{tekst}</p>
+    </div>
+
+    <div class="flex flex-col gap-3 sm:flex-row lg:shrink-0">
+      <Button href="/offerte" variant="donker" formaat="lg">
+        Offerte aanvragen
+        <Icon naam="pijl" class="h-4 w-4" />
+      </Button>
+      <Button
+        href={BEDRIJF.telefoonLink}
+        variant="outline-donker"
+        formaat="lg"
+        class="border-navy-900/25 text-navy-900 hover:border-navy-900 hover:bg-navy-900/5"
+      >
+        <Icon naam="telefoon" class="h-4 w-4" />
+        {BEDRIJF.telefoonWeergave}
+      </Button>
+    </div>
+  </div>
+</section>

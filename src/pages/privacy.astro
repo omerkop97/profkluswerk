@@ -1,0 +1,152 @@
+---
+import Base from '../layouts/Base.astro';
+import BrushEdge from '../components/BrushEdge.astro';
+import { BEDRIJF } from '../consts';
+
+/*
+ * CONCEPT. Inhoudelijk afgestemd op wat het offerteformulier daadwerkelijk
+ * verzamelt en op Netlify als verwerker. Laten nakijken voordat de site live
+ * gaat, en KvK-nummer plus volledige bedrijfsnaam invullen (PLAN.md §10).
+ */
+const bijgewerkt = '8 augustus 2026';
+---
+
+<Base
+  titel="Privacyverklaring | Prof Kluswerk"
+  omschrijving="Hoe Prof Kluswerk omgaat met uw persoonsgegevens bij een offerteaanvraag."
+>
+  <section class="relative bg-navy-900 text-white">
+    <div class="container-page relative pt-14 pb-16 lg:pt-20 lg:pb-20">
+      <p class="eyebrow text-gold-500">Juridisch</p>
+      <h1 class="mt-3 text-4xl uppercase sm:text-5xl">Privacyverklaring</h1>
+      <p class="mt-4 text-sm text-navy-200">Laatst bijgewerkt: {bijgewerkt}</p>
+    </div>
+
+    <BrushEdge class="text-white" />
+  </section>
+
+  <section class="bg-white pb-20 lg:pb-28">
+    <div class="container-page prose-tekst max-w-3xl">
+      <p>
+        {BEDRIJF.naam} hecht waarde aan uw privacy. In deze verklaring leest u
+        welke gegevens wij verzamelen, waarom wij dat doen en welke rechten u
+        heeft. Wij verkopen uw gegevens niet en gebruiken ze uitsluitend om uw
+        aanvraag te behandelen.
+      </p>
+
+      <h2>Wie is verantwoordelijk</h2>
+      <p>
+        {BEDRIJF.naam}, gevestigd in {BEDRIJF.standplaats}, is verantwoordelijk
+        voor de verwerking van uw persoonsgegevens.
+        {BEDRIJF.kvk && <>Ingeschreven bij de Kamer van Koophandel onder nummer {BEDRIJF.kvk}. </>}
+        U bereikt ons op <a href={BEDRIJF.telefoonLink}>{BEDRIJF.telefoonWeergave}</a>.
+      </p>
+
+      <h2>Welke gegevens wij verzamelen</h2>
+      <p>
+        Als u het offerteformulier invult, vragen wij om de volgende gegevens:
+      </p>
+      <ul>
+        <li>Uw naam</li>
+        <li>Uw telefoonnummer</li>
+        <li>Uw e-mailadres, als u dat invult</li>
+        <li>Uw postcode</li>
+        <li>Het type klus en uw omschrijving daarvan</li>
+        <li>Foto's van de klus, als u die meestuurt</li>
+      </ul>
+      <p>
+        Belt u ons of stuurt u een WhatsApp-bericht, dan verwerken wij alleen de
+        gegevens die u zelf in dat gesprek deelt.
+      </p>
+
+      <h2>Waarom wij ze verzamelen</h2>
+      <p>
+        Wij gebruiken deze gegevens om contact met u op te nemen, uw klus in te
+        schatten en een offerte uit te brengen. De postcode gebruiken wij om te
+        bepalen of u binnen ons werkgebied valt en om de reistijd in te
+        schatten. Foto's helpen ons om de klus te beoordelen zonder eerst langs
+        te hoeven komen.
+      </p>
+      <p>
+        De grondslag hiervoor is het uitvoeren van of voorbereiden op een
+        overeenkomst met u. Wordt het geen opdracht, dan is de grondslag ons
+        gerechtvaardigd belang om op uw aanvraag te reageren.
+      </p>
+
+      <h2>Hoe lang wij ze bewaren</h2>
+      <ul>
+        <li>
+          Aanvragen die niet tot een opdracht leiden, bewaren wij maximaal twee
+          jaar. Zo kunnen wij eerdere aanvragen terugvinden als u later opnieuw
+          contact opneemt.
+        </li>
+        <li>
+          Wordt het wel een opdracht, dan bewaren wij de administratie zeven
+          jaar. Dat is de wettelijke bewaarplicht van de Belastingdienst.
+        </li>
+      </ul>
+
+      <h2>Met wie wij ze delen</h2>
+      <p>
+        Wij verkopen uw gegevens niet en delen ze niet voor commerciële
+        doeleinden. Wij maken wel gebruik van de volgende partijen:
+      </p>
+      <ul>
+        <li>
+          <strong>Netlify</strong>, dat deze website host en de inzendingen van
+          het offerteformulier voor ons verwerkt en doorstuurt.
+        </li>
+        <li>
+          Waar nodig een <strong>erkende installateur</strong> voor gas-, water-
+          of elektrawerk. Wij delen dan alleen wat nodig is om de afspraak in te
+          plannen, en niet meer dan dat.
+        </li>
+      </ul>
+      <p>
+        Met deze partijen zijn de gebruikelijke afspraken gemaakt over de
+        beveiliging en vertrouwelijkheid van uw gegevens.
+      </p>
+
+      <h2>Cookies en meten</h2>
+      <p>
+        Deze website plaatst geen tracking-cookies en gebruikt geen advertentie-
+        of profileringstechnieken. Er is daarom ook geen cookiemelding. Wij
+        volgen u niet over andere websites.
+      </p>
+
+      <h2>Beveiliging</h2>
+      <p>
+        De website is uitsluitend bereikbaar via een beveiligde verbinding
+        (HTTPS). Toegang tot de aanvragen is beperkt tot de persoon die uw klus
+        behandelt.
+      </p>
+
+      <h2>Uw rechten</h2>
+      <p>U heeft het recht om:</p>
+      <ul>
+        <li>uw gegevens in te zien;</li>
+        <li>onjuiste gegevens te laten corrigeren;</li>
+        <li>uw gegevens te laten verwijderen;</li>
+        <li>bezwaar te maken tegen de verwerking;</li>
+        <li>uw gegevens in een overdraagbaar formaat te ontvangen.</li>
+      </ul>
+      <p>
+        Bel ons op <a href={BEDRIJF.telefoonLink}>{BEDRIJF.telefoonWeergave}</a> om
+        hier gebruik van te maken. Wij reageren binnen vier weken. Bent u het
+        niet eens met hoe wij met uw gegevens omgaan, dan kunt u een klacht
+        indienen bij de
+        <a
+          href="https://autoriteitpersoonsgegevens.nl"
+          target="_blank"
+          rel="noopener noreferrer">Autoriteit Persoonsgegevens</a
+        >.
+      </p>
+
+      <h2>Wijzigingen</h2>
+      <p>
+        Wij kunnen deze verklaring aanpassen als onze werkwijze verandert. De
+        datum bovenaan geeft aan wanneer de laatste wijziging is doorgevoerd.
+      </p>
+    </div>
+  </section>
+</Base>

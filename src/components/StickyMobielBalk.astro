@@ -1,0 +1,42 @@
+---
+import { BEDRIJF } from '../consts';
+import Icon from './Icon.astro';
+
+/**
+ * Vaste actiebalk onderaan op mobiel. Bellen en WhatsApp zijn in dit
+ * segment de laagste drempel, de flyer zet ze ook op 1 (PLAN.md §7).
+ */
+---
+
+<div
+  class="fixed inset-x-0 bottom-0 z-50 border-t border-navy-700 bg-navy-900 pb-[env(safe-area-inset-bottom)] lg:hidden"
+>
+  <div class="grid grid-cols-3 divide-x divide-navy-700">
+    <a
+      href={BEDRIJF.telefoonLink}
+      class="flex flex-col items-center gap-1 py-3 text-white transition-colors active:bg-navy-800"
+    >
+      <Icon naam="telefoon" class="h-5 w-5 text-gold-500" />
+      <span class="font-display text-[0.7rem] font-bold tracking-wide uppercase">Bellen</span>
+    </a>
+    <a
+      href={BEDRIJF.whatsapp}
+      target="_blank"
+      rel="noopener noreferrer"
+      class="flex flex-col items-center gap-1 py-3 text-white transition-colors active:bg-navy-800"
+    >
+      <Icon naam="whatsapp" class="h-5 w-5 text-gold-500" />
+      <span class="font-display text-[0.7rem] font-bold tracking-wide uppercase">WhatsApp</span>
+    </a>
+    <a
+      href="/offerte"
+      class="flex flex-col items-center gap-1 bg-gold-500 py-3 text-navy-900 transition-colors active:bg-gold-600"
+    >
+      <Icon naam="check" class="h-5 w-5" />
+      <span class="font-display text-[0.7rem] font-bold tracking-wide uppercase">Offerte</span>
+    </a>
+  </div>
+</div>
+
+<!-- ruimte zodat de balk de laatste sectie niet afdekt -->
+<div class="h-[4.75rem] lg:hidden" aria-hidden="true"></div>

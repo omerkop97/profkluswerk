@@ -1,0 +1,39 @@
+---
+/**
+ * Kwaststreek-rand tussen secties. De vormtaal van de flyer, als SVG.
+ * Zet de kleur via een text-* klasse op dit element (fill = currentColor).
+ */
+interface Props {
+  richting?: 'onder' | 'boven';
+  class?: string;
+}
+
+const { richting = 'onder', class: klasse = 'text-white' } = Astro.props;
+
+// Ruwe, licht rafelige bovenrand, geen strakke golf, maar een verfstreek.
+const pad =
+  'M0,44 C64,30 118,26 186,32 C243,37 286,49 349,47 C412,45 452,30 517,26 ' +
+  'C589,22 631,38 703,41 C769,44 812,31 878,27 C947,23 992,39 1060,43 ' +
+  'C1122,47 1168,35 1232,30 C1298,25 1352,33 1400,41 L1440,47 L1440,80 L0,80 Z';
+---
+
+<div
+  class={`pointer-events-none relative w-full leading-[0] ${klasse} ${
+    richting === 'boven' ? 'rotate-180' : ''
+  }`}
+  aria-hidden="true"
+>
+  <svg
+    class="block h-[38px] w-full md:h-[56px]"
+    viewBox="0 0 1440 80"
+    preserveAspectRatio="none"
+    fill="currentColor"
+  >
+    <path d={pad}></path>
+    <!-- losse spatten, alsof de kwast net loskomt -->
+    <circle cx="262" cy="20" r="4.5"></circle>
+    <circle cx="694" cy="26" r="3.5"></circle>
+    <circle cx="1105" cy="22" r="5"></circle>
+    <ellipse cx="905" cy="17" rx="8" ry="3.4"></ellipse>
+  </svg>
+</div>

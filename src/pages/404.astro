@@ -1,0 +1,29 @@
+---
+import Base from '../layouts/Base.astro';
+import Button from '../components/Button.astro';
+import Icon from '../components/Icon.astro';
+import { BEDRIJF } from '../consts';
+---
+
+<Base
+  titel="Pagina niet gevonden | Prof Kluswerk"
+  omschrijving="Deze pagina bestaat niet (meer)."
+>
+  <section class="bg-shell py-24 lg:py-32">
+    <div class="container-page max-w-xl text-center">
+      <p class="font-display text-7xl font-extrabold text-navy-100">404</p>
+      <h1 class="mt-4 text-3xl uppercase sm:text-4xl">Pagina niet gevonden</h1>
+      <p class="mt-5 text-lg leading-relaxed text-navy-700">
+        Deze pagina bestaat niet of is verplaatst. Zoekt u iets specifieks? Bel
+        gerust even.
+      </p>
+      <div class="mt-9 flex flex-wrap justify-center gap-3">
+        <Button href="/" formaat="lg">Terug naar home</Button>
+        <Button href={BEDRIJF.telefoonLink} variant="outline-donker" formaat="lg">
+          <Icon naam="telefoon" class="h-4 w-4" />
+          {BEDRIJF.telefoonWeergave}
+        </Button>
+      </div>
+    </div>
+  </section>
+</Base>

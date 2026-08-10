@@ -1,0 +1,98 @@
+---
+import { BEDRIJF, WERKGEBIED, WERKGEBIED_LANDELIJK } from '../consts';
+import { alleDiensten } from '../lib/diensten';
+import Logo from './Logo.astro';
+import Icon from './Icon.astro';
+
+const jaar = new Date().getFullYear();
+const diensten = await alleDiensten();
+---
+
+<footer class="bg-navy-900 text-navy-100">
+  <div class="container-page grid gap-12 py-16 md:grid-cols-2 lg:grid-cols-4">
+    <div class="lg:col-span-1">
+      <Logo variant="licht" />
+      <p class="mt-5 max-w-xs text-sm leading-relaxed text-navy-200">
+        Klusbedrijf uit {BEDRIJF.standplaats}. Onderhoud, renovatie en afwerking:
+        binnen en buiten, voor particulieren en bedrijven.
+      </p>
+      <p class="mt-5 font-display text-lg font-bold text-gold-500 italic">
+        {BEDRIJF.payoff}
+      </p>
+    </div>
+
+    <div>
+      <h2 class="eyebrow text-gold-500">Diensten</h2>
+      <ul class="mt-5 space-y-2.5 text-sm">
+        {
+          diensten.map((d) => (
+            <li>
+              <a
+                href={`/diensten/${d.id}`}
+                class="text-navy-100 transition-colors hover:text-white hover:underline"
+              >
+                {d.data.kort}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="eyebrow text-gold-500">Werkgebied</h2>
+      <p class="mt-5 text-sm leading-relaxed text-navy-200">
+        {WERKGEBIED.join(' · ')}
+      </p>
+      <p class="mt-4 text-sm leading-relaxed text-navy-200">
+        Voor grotere projecten ook actief in {WERKGEBIED_LANDELIJK.join(' · ')} en
+        de rest van Nederland.
+      </p>
+    </div>
+
+    <div>
+      <h2 class="eyebrow text-gold-500">Contact</h2>
+      <ul class="mt-5 space-y-4 text-sm">
+        <li>
+          <a
+            href={BEDRIJF.telefoonLink}
+            class="group flex items-center gap-3 transition-colors hover:text-white"
+          >
+            <Icon naam="telefoon" class="h-5 w-5 shrink-0 text-gold-500" />
+            <span class="font-display text-base font-bold">{BEDRIJF.telefoonWeergave}</span>
+          </a>
+        </li>
+        <li>
+          <a
+            href={BEDRIJF.whatsapp}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="flex items-center gap-3 transition-colors hover:text-white"
+          >
+            <Icon naam="whatsapp" class="h-5 w-5 shrink-0 text-gold-500" />
+            <span>WhatsApp ons</span>
+          </a>
+        </li>
+        <li class="flex items-center gap-3">
+          <Icon naam="pin" class="h-5 w-5 shrink-0 text-gold-500" />
+          <span>{BEDRIJF.regio}</span>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-navy-700">
+    <div
+      class="container-page flex flex-col gap-3 py-6 text-xs text-navy-200 sm:flex-row sm:items-center sm:justify-between"
+    >
+      <p>&copy; {jaar} {BEDRIJF.naam}. Alle rechten voorbehouden.</p>
+      <div class="flex flex-wrap items-center gap-x-5 gap-y-2">
+        {BEDRIJF.kvk && <span>KvK {BEDRIJF.kvk}</span>}
+        {BEDRIJF.btw && <span>BTW {BEDRIJF.btw}</span>}
+        <a href="/privacy" class="transition-colors hover:text-white hover:underline">
+          Privacyverklaring
+        </a>
+      </div>
+    </div>
+  </div>
+</footer>

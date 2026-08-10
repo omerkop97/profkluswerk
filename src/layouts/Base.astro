@@ -1,0 +1,108 @@
+---
+import '../styles/global.css';
+import { BEDRIJF, WERKGEBIED, WERKGEBIED_LANDELIJK } from '../consts';
+import { alleDiensten } from '../lib/diensten';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import StickyMobielBalk from '../components/StickyMobielBalk.astro';
+
+interface Props {
+  titel: string;
+  omschrijving: string;
+  /** Uit de index houden, bijvoorbeeld voor de bedankpagina */
+  noindex?: boolean;
+}
+
+const { titel, omschrijving, noindex = false } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const diensten = await alleDiensten();
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'HomeAndConstructionBusiness',
+  name: BEDRIJF.naam,
+  description: omschrijving,
+  url: Astro.site?.toString(),
+  telephone: '+31624983463',
+  slogan: BEDRIJF.payoff,
+  priceRange: '€€',
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: BEDRIJF.standplaats,
+    addressCountry: 'NL',
+  },
+  areaServed: [...WERKGEBIED, ...WERKGEBIED_LANDELIJK].map((plaats) => ({
+    '@type': 'City',
+    name: plaats,
+  })),
+  hasOfferCatalog: {
+    '@type': 'OfferCatalog',
+    name: 'Diensten',
+    itemListElement: diensten.map((d) => ({
+      '@type': 'Offer',
+      itemOffered: {
+        '@type': 'Service',
+        name: d.data.titel,
+        description: d.data.omschrijving,
+        url: new URL(`/diensten/${d.id}`, Astro.site).toString(),
+      },
+    })),
+  },
+};
+---
+
+<html lang="nl">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="canonical" href={canonical} />
+    <meta name="generator" content={Astro.generator} />
+    {noindex && <meta name="robots" content="noindex, follow" />}
+
+    <title>{titel}</title>
+    <meta name="description" content={omschrijving} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content={BEDRIJF.naam} />
+    <meta property="og:locale" content="nl_NL" />
+    <meta property="og:title" content={titel} />
+    <meta property="og:description" content={omschrijving} />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL('/og.jpg', Astro.site).toString()} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content={`${BEDRIJF.naam}, klusbedrijf uit ${BEDRIJF.standplaats}`} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content={new URL('/og.jpg', Astro.site).toString()} />
+
+    <meta name="theme-color" content="#1b2a47" />
+
+    <script
+      type="application/ld+json"
+      is:inline
+      set:html={JSON.stringify(schema)}
+    />
+
+    <!-- Pagina-specifieke head-inhoud, bijvoorbeeld extra schema -->
+    <slot name="head" />
+  </head>
+
+  <body class="min-h-screen antialiased">
+    <a
+      href="#hoofdinhoud"
+      class="sr-only rounded-lg bg-navy-900 px-5 py-3 font-display font-bold text-white focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-[100]"
+    >
+      Direct naar de inhoud
+    </a>
+
+    <Header />
+
+    <main id="hoofdinhoud">
+      <slot />
+    </main>
+
+    <Footer />
+    <StickyMobielBalk />
+  </body>
+</html>
