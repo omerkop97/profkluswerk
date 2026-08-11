@@ -232,7 +232,7 @@ herbouw**.
 | 2 | KvK + BTW-nummer | Footer, privacyverklaring | ❌ |
 | 3 | Volledige bedrijfsnaam + rechtsvorm | Juridisch | ❌ |
 | 4 | Projectfoto's, ik sorteer per dienst | Galerij | ⏳ aanwezig, nog aanleveren |
-| 5 | Portretfoto + zijn persoonlijke verhaal | `/over-ons`, staat nu op placeholder | ❌ |
+| 5 | Portretfoto + zijn persoonlijke verhaal | `/over-ons`, staat nu een werkfoto zonder gezicht | ❌ |
 | 9 | Openingstijden bevestigen | `/contact`, nu ingevuld als aanname | ❌ |
 | 10 | Keuze statistiek: Plausible, Umami of niets | Fase 6 | ❌ |
 | 6 | Logo als vector (AI/EPS/SVG), anders trek ik het uit de flyer | Scherpte op retina | ❌ |

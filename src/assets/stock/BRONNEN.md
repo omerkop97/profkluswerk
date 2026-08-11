@@ -16,6 +16,7 @@ gratis te gebruiken, ook commercieel, naamsvermelding niet verplicht.
 | `laminaat.jpg` | 4263067 | Laminaat leggen met slaghout |
 | `bestrating-tuin.jpg` | 15360454 | Sierbestrating in verband |
 | `verbouwing.jpg` | 6474192 | Vakman werkt een binnenwand af |
+| `vakwerk-detail.jpg` | 11427094 | Aftekenen langs een duimstok, staand formaat voor `/over-ons` |
 | `detail-*.jpg` | idem | Vierkante uitsnedes van bovenstaande, voor het 2x2 raster |
 
 Vervangen gaat zo: zet de echte foto's onder dezelfde bestandsnamen in

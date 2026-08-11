@@ -5,17 +5,20 @@ import Button from '../components/Button.astro';
 import Icon from '../components/Icon.astro';
 import BrushEdge from '../components/BrushEdge.astro';
 import CtaBand from '../components/CtaBand.astro';
-import FotoPlaceholder from '../components/FotoPlaceholder.astro';
 import { BEDRIJF, USPS, WERKWIJZE, WERKGEBIED, WERKGEBIED_LANDELIJK } from '../consts';
 import { alleDiensten } from '../lib/diensten';
 
 import fotoOnderhoud from '../assets/stock/onderhoud-renovatie.jpg';
+import fotoVakwerk from '../assets/stock/vakwerk-detail.jpg';
 
 /*
  * Deze tekst bevat bewust geen oprichtingsjaar, aantal jaren ervaring,
  * teamgrootte of certificeringen. Die feiten kennen we niet en verzinnen we
  * niet. Zodra Prof Kluswerk ze aanlevert, kunnen ze hier in.
- * TODO: portretfoto en persoonlijk verhaal, zie PLAN.md §10.
+ *
+ * Het beeld naast "wie u aan de lijn krijgt" is bewust een werkfoto zonder
+ * gezicht. Een geposeerd stockportret op die plek zou lezen als de eigenaar,
+ * en dat is hij niet. Vervangen zodra er een echte portretfoto is.
  */
 const diensten = await alleDiensten();
 
@@ -79,10 +82,12 @@ const uspIconen = ['medaille', 'handdruk', 'euro', 'klok'] as const;
       </div>
 
       <div class="relative">
-        <FotoPlaceholder
-          label="Portretfoto Prof Kluswerk"
-          icoon="gereedschap"
-          class="aspect-[4/5] w-full rounded-2xl border border-navy-100"
+        <Image
+          src={fotoVakwerk}
+          alt="Aftekenen langs een duimstok voordat er gesneden wordt"
+          widths={[450, 900]}
+          sizes="(min-width: 1024px) 450px, 100vw"
+          class="aspect-[4/5] w-full rounded-2xl border border-navy-100 object-cover"
         />
         <div
           class="absolute -bottom-5 -left-4 rotate-[-3deg] rounded-lg bg-gold-500 px-5 py-3 shadow-xl sm:-left-6"
@@ -157,17 +162,6 @@ const uspIconen = ['medaille', 'handdruk', 'euro', 'klok'] as const;
           }
         </ol>
 
-        <div class="mt-10 rounded-2xl border-l-4 border-gold-500 bg-shell p-6">
-          <h3 class="font-display text-base font-extrabold text-navy-900 uppercase">
-            Wat wij niet doen
-          </h3>
-          <p class="mt-2 leading-relaxed text-navy-700">
-            Gas-, water- en elektrawerk laten wij over aan een erkend
-            installateur. Dat hoort bij een gecertificeerd vakman en daar zijn
-            wij eerlijk over. Wij regelen wel de afstemming en de planning,
-            zodat u er geen omkijken naar heeft.
-          </p>
-        </div>
       </div>
 
       <div class="lg:col-span-5">
