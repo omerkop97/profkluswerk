@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 700 120" width="700" height="120" role="img" aria-label="Prof Kluswerk">
+  <g transform="translate(0,14)">
+  <path d="M6 46 L55 10 L104 46" fill="none" stroke="#ffffff" stroke-width="9"
+        stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="30" y="54" width="14" height="14" rx="2.5" fill="#ffffff"/>
+  <rect x="49" y="54" width="14" height="14" rx="2.5" fill="#ffffff"/>
+  <rect x="70" y="53.5" width="34" height="13" rx="4" fill="#efb22a"/>
+  <path d="M104 60h9v13" fill="none" stroke="#efb22a" stroke-width="5"
+        stroke-linecap="round" stroke-linejoin="round"/></g>
+  <text x="132" y="66" font-family="Archivo, 'Archivo Black', 'Arial Black', Arial, Helvetica, sans-serif" font-size="58" font-weight="900" letter-spacing="-1.5">
+    <tspan fill="#ffffff">PROF</tspan><tspan fill="#efb22a"> KLUSWERK</tspan>
+  </text>
+  <text x="136" y="92" font-family="Inter, 'Segoe UI', Arial, sans-serif" font-size="15" font-weight="700" letter-spacing="4.4" fill="#b8c4d8">
+    ONDERHOUD · RENOVATIE · AFWERKING
+  </text>
+</svg>

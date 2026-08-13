@@ -188,21 +188,36 @@ const beloftes = [
           </div>
 
           <div>
-            <label class={labelKlasse} for="fotos">
+            <span class={labelKlasse}>
               Foto's van de klus <span class={optioneel}>(optioneel)</span>
-            </label>
-            <input
-              class="mt-2 w-full cursor-pointer rounded-lg border-2 border-dashed border-navy-100 bg-navy-50 px-4 py-4 text-sm text-navy-700 transition-colors file:mr-4 file:cursor-pointer file:rounded-md file:border-0 file:bg-navy-900 file:px-4 file:py-2 file:font-display file:text-[0.7rem] file:font-bold file:tracking-wide file:text-white file:uppercase hover:border-navy-200"
-              type="file"
-              id="fotos"
-              name="fotos"
-              accept="image/*"
-              multiple
-              aria-describedby="hint-fotos fout-fotos"
-            />
+            </span>
+
+            {
+              /*
+               * Netlify Forms accepteert één bestand per veld, dus drie losse
+               * velden in plaats van één veld met `multiple`.
+               * Zie https://docs.netlify.com/manage/forms/setup/
+               */
+            }
+            <div class="mt-2 space-y-2">
+              {
+                [1, 2, 3].map((n) => (
+                  <input
+                    class="w-full cursor-pointer rounded-lg border-2 border-dashed border-navy-100 bg-navy-50 px-4 py-3 text-sm text-navy-700 transition-colors file:mr-4 file:cursor-pointer file:rounded-md file:border-0 file:bg-navy-900 file:px-4 file:py-2 file:font-display file:text-[0.7rem] file:font-bold file:tracking-wide file:text-white file:uppercase hover:border-navy-200"
+                    type="file"
+                    id={`foto${n}`}
+                    name={`foto${n}`}
+                    accept="image/*"
+                    aria-label={`Foto ${n} van de klus, optioneel`}
+                    aria-describedby="hint-fotos fout-fotos"
+                  />
+                ))
+              }
+            </div>
+
             <p id="hint-fotos" class="mt-2 text-xs leading-relaxed text-navy-600">
-              Maximaal 3 foto's, samen niet groter dan 8 MB. Met foto's kunnen we
-              vaak al meedenken zonder eerst langs te komen.
+              Maximaal drie foto's, samen niet groter dan 7 MB. Met foto's kunnen
+              we vaak al meedenken zonder eerst langs te komen.
             </p>
             <p id="fout-fotos" class="mt-1.5 hidden text-sm font-medium text-red-700"></p>
           </div>
@@ -298,14 +313,20 @@ const beloftes = [
     // Zonder JavaScript blijven de native required-attributen gewoon werken.
     formulier.setAttribute('novalidate', '');
 
-    const MAX_BESTANDEN = 3;
-    const MAX_BYTES = 8 * 1024 * 1024;
+    // Netlify weigert een verzoek boven 8 MB. We houden marge voor de tekstvelden.
+    const MAX_BYTES = 7 * 1024 * 1024;
 
     const samenvatting = document.getElementById('formulier-fout') as HTMLElement;
 
+    // De drie fotovelden delen één foutmelding
+    const meldingVoor = (veld: HTMLElement) =>
+      document.getElementById(
+        veld.id.startsWith('foto') ? 'fout-fotos' : `fout-${veld.id}`
+      );
+
     const toonFout = (veld: HTMLElement, bericht: string) => {
       veld.setAttribute('aria-invalid', 'true');
-      const melding = document.getElementById(`fout-${veld.id}`);
+      const melding = meldingVoor(veld);
       if (melding) {
         melding.textContent = bericht;
         melding.classList.remove('hidden');
@@ -314,7 +335,7 @@ const beloftes = [
 
     const wisFout = (veld: HTMLElement) => {
       veld.removeAttribute('aria-invalid');
-      const melding = document.getElementById(`fout-${veld.id}`);
+      const melding = meldingVoor(veld);
       if (melding) {
         melding.textContent = '';
         melding.classList.add('hidden');
@@ -332,9 +353,11 @@ const beloftes = [
       const postcode = formulier.elements.namedItem('postcode') as HTMLInputElement;
       const dienst = formulier.elements.namedItem('dienst') as HTMLSelectElement;
       const omschrijving = formulier.elements.namedItem('omschrijving') as HTMLTextAreaElement;
-      const fotos = formulier.elements.namedItem('fotos') as HTMLInputElement;
+      const fotoVelden = [1, 2, 3]
+        .map((n) => formulier.elements.namedItem(`foto${n}`) as HTMLInputElement)
+        .filter(Boolean);
 
-      [naam, telefoon, email, postcode, dienst, omschrijving, fotos].forEach(wisFout);
+      [naam, telefoon, email, postcode, dienst, omschrijving, ...fotoVelden].forEach(wisFout);
 
       if (leeg(naam.value)) {
         toonFout(naam, 'Vul uw naam in.');
@@ -376,13 +399,17 @@ const beloftes = [
         fouten.push(omschrijving);
       }
 
-      const bestanden = fotos.files ? Array.from(fotos.files) : [];
-      if (bestanden.length > MAX_BESTANDEN) {
-        toonFout(fotos, `Maximaal ${MAX_BESTANDEN} foto's tegelijk.`);
-        fouten.push(fotos);
-      } else if (bestanden.reduce((t, b) => t + b.size, 0) > MAX_BYTES) {
-        toonFout(fotos, 'De foto’s zijn samen groter dan 8 MB. Kies er minder of kleinere.');
-        fouten.push(fotos);
+      const totaal = fotoVelden.reduce(
+        (som, veld) => som + (veld.files?.[0]?.size ?? 0),
+        0
+      );
+      if (totaal > MAX_BYTES) {
+        const eerste = fotoVelden.find((v) => v.files?.length) ?? fotoVelden[0];
+        toonFout(
+          eerste,
+          'De foto’s zijn samen te groot. Houd het onder de 7 MB, of stuur er minder mee.'
+        );
+        fouten.push(eerste);
       }
 
       return fouten;

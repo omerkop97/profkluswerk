@@ -218,7 +218,8 @@ herbouw**.
 | 2 | ✅ Homepage | Lokale preview, jij beoordeelt vóór we verder gaan |
 | 3a | ✅ 6 dienstpagina's | Teksten staan in `src/content/diensten/` |
 | 3b | Projectgalerij | Wacht op zijn foto's |
-| 4 | ✅ Offerte-flow: formulier, validatie, upload, bevestiging | Testmail kan pas na deploy, zie NETLIFY.md |
+| 4 | ✅ Offerte-flow: formulier, validatie, upload, bevestiging | Netlify Forms staat aan, testinzending nog doen |
+| 4b | ✅ Chatwidget (Voiceglow) | Verwerkt in de privacyverklaring |
 | 5 | ✅ `/over-ons`, `/contact`, privacyverklaring, OG-afbeelding, SEO- en toegankelijkheidscheck | Statistiek nog niet gekozen |
 | 6 | Domein koppelen, Netlify, Google Bedrijfsprofiel, mail-alias | Live |
 
@@ -235,7 +236,7 @@ herbouw**.
 | 5 | Portretfoto + zijn persoonlijke verhaal | `/over-ons`, staat nu een werkfoto zonder gezicht | ❌ |
 | 9 | Openingstijden bevestigen | `/contact`, nu ingevuld als aanname | ❌ |
 | 10 | Keuze statistiek: Plausible, Umami of niets | Fase 6 | ❌ |
-| 6 | Logo als vector (AI/EPS/SVG), anders trek ik het uit de flyer | Scherpte op retina | ❌ |
+| 6 | Origineel logo als vector (AI/EPS) opvragen bij de flyerontwerper | Drukwerk en groot formaat. Voor het web is de nabouw in `logo/` voldoende | ❌ |
 | 7 | Certificaten / verzekering / garantie, navragen | Vertrouwensblok | ❌ |
 | 8 | Bestaande reviews, navragen | Reviewsectie | ❌ |
 
