@@ -13,7 +13,17 @@ const diensten = await alleDiensten();
  * HTML gelezen, er is dus geen backend nodig. Let op: dit werkt alleen op
  * Netlify, niet op de lokale dev-server. Zie NETLIFY.md.
  */
-const FORMULIER = 'offerte';
+/*
+ * Netlify legt de veldtypes vast op het moment dat hij een formulier voor het
+ * eerst ontdekt. Het formulier heette eerst 'offerte' en had toen één
+ * uploadveld met de naam 'fotos'. Na de wijziging naar drie losse velden bleven
+ * foto1 t/m foto3 als tekstveld staan, waardoor de bestanden werden genegeerd.
+ * Een nieuwe naam dwingt een vers formulierrecord af met de juiste types.
+ *
+ * LET OP: bij het wijzigen van deze naam maakt Netlify een nieuw formulier aan.
+ * De e-mailmelding moet dan opnieuw worden ingesteld. Zie NETLIFY.md.
+ */
+const FORMULIER = 'offerte-aanvraag';
 
 const invoer =
   'w-full rounded-lg border-2 border-navy-100 bg-white px-4 py-3 text-navy-900 ' +

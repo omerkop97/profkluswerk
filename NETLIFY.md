@@ -24,8 +24,8 @@ kun je meteen delen om mee te kijken.
 
 Netlify leest de formulierdefinitie bij elke deploy uit de statische HTML. Na de
 eerste geslaagde deploy staat er onder **Forms** een formulier met de naam
-`offerte`. Zie je het niet, controleer dan of `dist/offerte/index.html` deze
-onderdelen bevat:
+`offerte-aanvraag`. Zie je het niet, controleer dan of `dist/offerte/index.html`
+deze onderdelen bevat:
 
 - `data-netlify="true"`
 - `<input type="hidden" name="form-name" value="offerte">`
@@ -41,8 +41,17 @@ e-mailmelding aan, anders mist hij aanvragen:
 Email notification**
 
 - Event: *New form submission*
-- Form: `offerte`
+- Form: `offerte-aanvraag`
 - Email to notify: het privéadres van Prof Kluswerk
+
+> **Bij het hernoemen van een formulier maakt Netlify een nieuw record aan.** De
+> melding staat dan nog op het oude formulier en er komt niets meer binnen. Stel
+> hem opnieuw in en gooi het oude formulier daarna weg.
+>
+> Hernoemen is soms nodig, want Netlify legt de veldtypes vast zodra hij een
+> formulier voor het eerst ziet. Verandert een tekstveld later in een
+> uploadveld, dan blijft hij het als tekst behandelen en verdwijnen de
+> bestanden zonder foutmelding.
 
 > Het adres zelf staat bewust niet in deze repository, die is publiek. Vul het
 > rechtstreeks in het Netlify-dashboard in.
